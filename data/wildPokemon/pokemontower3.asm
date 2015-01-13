@@ -1,0 +1,29 @@
+TowerMons3:
+	db $0A
+
+	IF DEF(_YELLOW)
+		db 20,GASTLY
+		db 21,GASTLY
+		db 22,GASTLY
+		db 23,GASTLY
+		db 24,GASTLY
+		db 19,GASTLY
+		db 18,GASTLY
+		db 25,GASTLY
+		db 20,HAUNTER
+		db 25,HAUNTER
+	ELSE
+		db 8,RATTATA
+		db 8,ZUBAT
+		db 9,ZUBAT
+		db 9,RATTATA
+		db 9,CUBONE
+		db 10,RATTATA
+		db 10,ZUBAT
+		db 10,CUBONE
+		db 12,RATTATA
+		db 13,RATTATA
+	ENDC
+
+	db $00
+

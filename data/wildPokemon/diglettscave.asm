@@ -1,0 +1,14 @@
+CaveMons:
+	db $14
+	db 18,DIGLETT
+	db 19,DIGLETT
+	db 17,DIGLETT
+	db 13,PARAS
+	db 19,SANDSHREW
+	db 15,ONIX
+	db 18,PARASECT
+	db 14,CHARMANDER
+	db 29,DUGTRIO
+	db 31,DUGTRIO
+	db $00
+

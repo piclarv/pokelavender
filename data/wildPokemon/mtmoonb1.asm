@@ -1,0 +1,27 @@
+MoonMonsB1:
+	db $0A
+	IF DEF(_YELLOW)
+		db 8,ZUBAT
+		db 9,ZUBAT
+		db 10,GEODUDE
+		db 6,ZUBAT
+		db 7,ZUBAT
+		db 10,ZUBAT
+		db 10,GEODUDE
+		db 11,ZUBAT
+		db 12,SANDSHREW
+		db 11,CLEFAIRY
+	ELSE
+		db 21,ZUBAT
+		db 22,ZUBAT
+		db 22,PARAS
+		db 23,ONIX
+		db 20,GOLBAT
+		db 23,PARAS
+		db 21,PARASECT
+		db 25,ONIX
+		db 23,CLEFAIRY
+		db 21,LICKITUNG
+	ENDC
+	db $00
+

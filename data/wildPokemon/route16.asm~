@@ -1,0 +1,28 @@
+Route16Mons:
+	db $19
+	IF DEF(_YELLOW)
+		db 22,SPEAROW
+		db 22,DODUO
+		db 23,RATTATA
+		db 24,DODUO
+		db 24,RATTATA
+		db 26,DODUO
+		db 23,SPEAROW
+		db 24,FEAROW
+		db 25,RATICATE
+		db 26,RATICATE
+	ELSE
+		db 27,SPEAROW
+		db 29,PIDGEY
+		db 29,PIDGEOTTO
+		db 27,DODUO
+		db 27,POLIWAG
+		db 25,DODUO
+		db 25,DITTO
+		db 29,RATTATA
+		db 30,RATICATE
+		db 26,PIDGEOT
+	ENDC
+
+	db $00
+

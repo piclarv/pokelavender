@@ -1,0 +1,29 @@
+Route17Mons:
+	db $19
+
+	IF DEF(_YELLOW)
+		db 26,DODUO
+		db 27,FEAROW
+		db 27,DODUO
+		db 28,DODUO
+		db 28,PONYTA
+		db 30,PONYTA
+		db 29,FEAROW
+		db 28,DODUO
+		db 32,PONYTA
+		db 29,DODRIO
+	ELSE
+		db 20,DODUO
+		db 22,PONYTA
+		db 25,RATICATE
+		db 24,PONYTA
+		db 27,PONYTA
+		db 26,DODUO
+		db 28,DODRIO
+		db 29,FARFETCH_D
+		db 25,FEAROW
+		db 27,RAPIDASH
+	ENDC
+
+	db $00
+

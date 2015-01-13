@@ -1,0 +1,29 @@
+PlateauMons2:
+	db $0A
+
+	IF DEF(_YELLOW)
+		db 31,GEODUDE
+		db 36,GEODUDE
+		db 41,GEODUDE
+		db 44,ZUBAT
+		db 39,GOLBAT
+		db 44,GRAVELER
+		db 45,ONIX
+		db 47,ONIX
+		db 39,MACHOKE
+		db 42,MACHOKE
+	ELSE
+		db 27,RHYHORN
+		db 29,MANKEY
+		db 31,GOLBAT
+		db 41,ONIX
+		db 44,ONIX
+		db 47,ONIX
+		db 46,RHYDON
+		db 45,GOLBAT
+		db 45,MAROWAK
+		db 48,SANDSLASH
+	ENDC
+
+	db $00
+

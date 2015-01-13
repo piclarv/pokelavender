@@ -1,0 +1,29 @@
+TowerMons6:
+	db $0F
+
+	IF DEF(_YELLOW)
+		db 22,GASTLY
+		db 23,GASTLY
+		db 24,GASTLY
+		db 25,GASTLY
+		db 26,GASTLY
+		db 21,GASTLY
+		db 22,CUBONE
+		db 27,GASTLY
+		db 22,HAUNTER
+		db 27,HAUNTER
+	ELSE
+		db 10,RATTATA
+		db 10,ZUBAT
+		db 11,ZUBAT
+		db 12,RATTATA
+		db 10,CUBONE
+		db 11,RATTATA
+		db 11,ZUBAT
+		db 12,CUBONE
+		db 14,RATTATA
+		db 15,RATICATE
+	ENDC
+
+	db $00
+

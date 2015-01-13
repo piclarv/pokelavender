@@ -1,0 +1,34 @@
+TunnelMonsB1:
+	db $0F
+
+	IF DEF(_YELLOW)
+		db 15,ZUBAT
+		db 16,GEODUDE
+		db 17,ZUBAT
+		db 19,ZUBAT
+		db 18,GEODUDE
+		db 20,GEODUDE
+		db 21,ZUBAT
+		db 17,MACHOP
+		db 19,MACHOP
+		db 21,MACHOP
+	ELSE
+		db 26,ZUBAT
+		db 27,GOLBAT
+		db 27,ONIX
+		db 25,CUBONE
+		db 26,SANDSHREW
+		IF DEF(_RED) || DEF(_GREEN) || (DEF(_BLUE) && !DEF(_JAPAN))
+			db 18,ZUBAT
+		ENDC
+		IF (DEF(_BLUE) && DEF(_JAPAN))
+			db 18,DITTO
+		ENDC
+		db 25,MAROWAK
+		db 27,RHYHORN
+		db 23,ONIX
+		db 25,MAROWAK
+	ENDC
+
+	db $00
+
