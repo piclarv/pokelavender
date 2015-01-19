@@ -53,7 +53,7 @@ OakSpeech: ; 6115 (1:6115)
 	ld a,99						; debugging is
 	ld [wcf96],a					; complete.
 	call AddItemToInventory				;
-	ld a,MAX_REPEL					;
+	ld a,MASTER_BALL				;
 	ld [wcf91],a					;
 	ld a,99						;
 	ld [wcf96],a					;
