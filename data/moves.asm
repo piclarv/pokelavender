@@ -175,9 +175,9 @@ endm
 	move SLASH,        NO_ADDITIONAL_EFFECT,        70, NORMAL,   100, 20
 	move SUBSTITUTE,   SUBSTITUTE_EFFECT,            0, NORMAL,   100, 10
 	move MUD_SLAP,     ACCURACY_DOWN_SIDE_EFFECT,   20, GROUND,    85, 15
-	move COTTON_SPORE, SPEED_DOWN2_EFFECT,		 0, GRASS,     85, 40
+	move COTTON_SPORE, SPEED_DOWN2_EFFECT,		 	 0, GRASS,     85, 40
 	move FLAME_WHEEL,  NO_ADDITIONAL_EFFECT,        60, FIRE,     100, 25
-	move ROLLOUT,      RAGE_EFFECT,                 20, ROCK,     100, 20
+	move ROLLOUT,      ROLLOUT_EFFECT,               2, ROCK,     100, 20
 	move RAIN_DANCE,   SPLASH_EFFECT,                0, WATER,    100,  5
 	move FLAIL,        RECOIL_EFFECT,               50, NORMAL,   100, 15
 	move RAPID_SPIN,   NO_ADDITIONAL_EFFECT,        20, NORMAL,   100, 40
