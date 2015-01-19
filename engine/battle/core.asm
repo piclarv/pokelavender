@@ -7199,7 +7199,7 @@ RolloutEffect:
 	ld [hl], a 
 	and %01110000
 	cp %01010000
-	jr nz, notMax
+	jr nz, .notMax
 	ld a, [hl]
 	and %10001111 ; clear rollout status
 	ld [hl], a
