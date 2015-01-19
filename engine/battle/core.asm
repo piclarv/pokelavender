@@ -85,6 +85,7 @@ EffectsArray5: ; 3c03b (f:403b)
 	db ATTACK_TWICE_EFFECT
 	db JUMP_KICK_EFFECT
 	db RECOIL_EFFECT
+	db ROLLOUT_EFFECT
 	; fallthrough to Next EffectsArray
 EffectsArray5B: ; 3c049 (f:4049)
 ; moves that prevent the player from switching moves?
@@ -4426,13 +4427,13 @@ HandleRollout:
 	and %01110000
 	swap a
 	and a
+	pop hl
 	ret z 
 .loop
 	sla d
 	dec a
 	jr nz, .loop 
 	
-	pop hl
 	ret
 	
 ; get stat c of enemy mon
