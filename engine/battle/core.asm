@@ -403,7 +403,7 @@ MainInBattleLoop: ; 3c233 (f:4233)
 	and a
 	ret nz ; return if pokedoll was used to escape from battle
 	ld a, [wBattleMonStatus]
-	and (1 << FRZ) | SLP ; is mon frozen or asleep?
+	and SLP ; is mon asleep?
 	jr nz, .selectEnemyMove ; if so, jump
 	ld a, [W_PLAYERBATTSTATUS1]
 	and %00100001 ; check player is using Bide or using a multi-turn attack like wrap
@@ -3000,7 +3000,7 @@ SelectEnemyMove: ; 3d564 (f:5564)
 	and $12     ; using multi-turn move or bide
 	ret nz
 	ld a, [wEnemyMonStatus]
-	and SLP | 1 << FRZ ; sleeping or frozen
+	and SLP ; sleeping 
 	ret nz
 	ld a, [W_ENEMYBATTSTATUS1]
 	and $21      ; using fly/dig or thrash/petal dance
@@ -3390,6 +3390,9 @@ CheckPlayerStatusConditions: ; 3d854 (f:5854)
 .FrozenCheck
 	bit FRZ,[hl] ; frozen?
 	jr z,.HeldInPlaceCheck
+	ld a, [wPlayerSelectedMove]
+	cp FLAME_WHEEL
+	jr z, .defrostMon
 	ld hl,IsFrozenText
 	call PrintText
 	xor a
@@ -3397,6 +3400,17 @@ CheckPlayerStatusConditions: ; 3d854 (f:5854)
 	ld hl,Func_3d80a
 	jp .CannotUseMove
 
+.defrostMon	
+	ld hl, wBattleMonStatus
+	res FRZ, [hl]
+	xor a
+	inc a
+	ld [H_WHOSETURN],a
+	ld hl, FireDefrostedText
+	call PrintText
+	xor a
+	ld [H_WHOSETURN],a
+	
 .HeldInPlaceCheck
 	ld a,[W_ENEMYBATTSTATUS1]
 	bit 5,a
@@ -5862,15 +5876,31 @@ CheckEnemyStatusConditions: ; 3e88f (f:688f)
 	ld [wccf2], a
 	ld hl, Func_3e88c
 	jp .cannotUseMove
+	
 .checkIfFrozen
 	bit FRZ, [hl]
 	jr z, .checkIfTrapped
+	ld a, [wEnemySelectedMove]
+	cp FLAME_WHEEL
+	jr z, .defrostMon
 	ld hl, IsFrozenText
 	call PrintText
 	xor a
 	ld [wccf2], a
 	ld hl, Func_3e88c
 	jp .cannotUseMove
+
+.defrostMon	
+	ld hl, wEnemyMonStatus
+	res FRZ, [hl]
+	xor a 
+	ld [H_WHOSETURN],a
+	ld hl, FireDefrostedText
+	call PrintText
+	xor a 
+	inc a 
+	ld [H_WHOSETURN],a
+	
 .checkIfTrapped
 	ld a, [W_PLAYERBATTSTATUS1]
 	bit 5, a ; is the player using a multi-turn attack like warp

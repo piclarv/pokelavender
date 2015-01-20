@@ -919,6 +919,7 @@ W_PLAYERBATTSTATUS3:: ; d064
 ; bit 1 - light screen
 ; bit 2 - reflect
 ; bit 3 - tranformed
+; bits 4,5,6 - rollout
 	ds 1
 
 wd065:: ds 1
