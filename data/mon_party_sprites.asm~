@@ -76,3 +76,14 @@ MonPartyData: ; 7190d (1c:590d)
 	dn SPRITE_SNAKE, SPRITE_MON				;Dragonite/Mewtwo
 	dn SPRITE_MON, SPRITE_QUADRUPED				;Mew/Mareep
 	dn SPRITE_MON, SPRITE_MON				;Flaafy/Ampharos
+	dn SPRITE_MON, SPRITE_MON			;Cyndaquil/Quilava
+	dn SPRITE_MON, SPRITE_FAIRY			;Typhlosion/Marill
+	dn SPRITE_FAIRY, SPRITE_QUADRUPED		;Marill/Phanpy
+	dn SPRITE_MON, SPRITE_QUADRUPED			;Donphan/Sentret
+	dn SPRITE_QUADRUPED, SPRITE_MON			;Furret/Teddiursa
+	dn SPRITE_MON, SPRITE_BUG			;Ursaring/Spinarak
+	dn SPRITE_BUG, SPRITE_MON			;Ariados/Totodile
+	dn SPRITE_MON, SPRITE_MON			;Croconaw/Feraligatr
+	dn SPRITE_GRASS, SPRITE_GRASS			;Chikorita/Bayleef
+	dn SPRITE_GRASS, SPRITE_MON			;Meganium/Swinub
+	dn SPRITE_MON, 0				;Piloswine/Placeholder

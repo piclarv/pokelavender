@@ -170,5 +170,10 @@ MoveNames:: ; b0000 (2c:4000)
 	db "RAIN DANCE@"
 	db "FLAIL@"
 	db "RAPID SPIN@"
+	db "ENDURE@"
+	db "YAWN@"
+	db "SCARY FACE@"
+	db "SPIDER WEB@"
+	db "POWDER SNOW@"
 	db "STRUGGLE@"
 

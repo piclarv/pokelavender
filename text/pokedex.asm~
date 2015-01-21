@@ -549,13 +549,13 @@ _KoffingDexEntry::
 	dex
 
 _QuilavaDexEntry::
-	text "Be careful if its"
-	next "back on you during"
-	next "battle. It means"
+	text "Be careful if it"
+	next "turns its back on"
+	next "you during battle."
 
-	page "that it will attack"
-	next "with the fire on"
-	next "its back"
+	page "It means it will"
+	next "attack with the"
+	next "fire on its back"
 	dex
 
 _MankeyDexEntry::
@@ -678,6 +678,16 @@ _DonphanDexEntry::
 	next "long to grow"
 	dex
 
+_SentretDexEntry::
+	text "blah blah blah"
+	next "blah blah blah"
+	next "blah blah blah"
+
+	page "blah blah blah"
+	next "blah blah blah"
+	next "blah blah blah"
+	dex
+
 _DoduoDexEntry::
 	text "A bird that makes"
 	next "up for its poor"
@@ -768,6 +778,36 @@ _KrabbyDexEntry::
 	next "sideways"
 	dex
 
+_FurretDexEntry::
+	text "blah blah blah"
+	next "blah blah blah"
+	next "blah blah blah"
+
+	page "blah blah blah"
+	next "blah blah blah"
+	next "blah blah blah"
+	dex
+
+_TeddiursaDexEntry::
+	text "blah blah blah"
+	next "blah blah blah"
+	next "blah blah blah"
+
+	page "blah blah blah"
+	next "blah blah blah"
+	next "blah blah blah"
+	dex
+
+_UrsaringDexEntry::
+	text "blah blah blah"
+	next "blah blah blah"
+	next "blah blah blah"
+
+	page "blah blah blah"
+	next "blah blah blah"
+	next "blah blah blah"
+	dex
+
 _VulpixDexEntry::
 	text "At the time of"
 	next "birth, it has"
@@ -806,6 +846,26 @@ _RaichuDexEntry::
 	page "itself from its"
 	next "own high voltage"
 	next "power"
+	dex
+
+_SpinarakDexEntry::
+	text "blah blah blah"
+	next "blah blah blah"
+	next "blah blah blah"
+
+	page "blah blah blah"
+	next "blah blah blah"
+	next "blah blah blah"
+	dex
+
+_AriadosDexEntry::
+	text "blah blah blah"
+	next "blah blah blah"
+	next "blah blah blah"
+
+	page "blah blah blah"
+	next "blah blah blah"
+	next "blah blah blah"
 	dex
 
 _DratiniDexEntry::
@@ -866,6 +926,26 @@ _SeadraDexEntry::
 	page "its wing-like"
 	next "pectoral fins and"
 	next "stout tail"
+	dex
+
+_TotodileDexEntry::
+	text "blah blah blah"
+	next "blah blah blah"
+	next "blah blah blah"
+
+	page "blah blah blah"
+	next "blah blah blah"
+	next "blah blah blah"
+	dex
+
+_CroconawDexEntry::
+	text "blah blah blah"
+	next "blah blah blah"
+	next "blah blah blah"
+
+	page "blah blah blah"
+	next "blah blah blah"
+	next "blah blah blah"
 	dex
 
 _SandshrewDexEntry::
@@ -1058,6 +1138,16 @@ _BeedrillDexEntry::
 	next "and tail"
 	dex
 
+_FeraligatrDexEntry::
+	text "blah blah blah"
+	next "blah blah blah"
+	next "blah blah blah"
+
+	page "blah blah blah"
+	next "blah blah blah"
+	next "blah blah blah"
+	dex
+
 _DodrioDexEntry::
 	text "Uses its three"
 	next "brains to execute"
@@ -1108,6 +1198,26 @@ _DewgongDexEntry::
 	next "cold waters"
 	dex
 
+_ChikoritaDexEntry::
+	text "blah blah blah"
+	next "blah blah blah"
+	next "blah blah blah"
+
+	page "blah blah blah"
+	next "blah blah blah"
+	next "blah blah blah"
+	dex
+
+_BayleefDexEntry::
+	text "blah blah blah"
+	next "blah blah blah"
+	next "blah blah blah"
+
+	page "blah blah blah"
+	next "blah blah blah"
+	next "blah blah blah"
+	dex
+
 _CaterpieDexEntry::
 	text "Its short feet"
 	next "are tipped with"
@@ -1146,6 +1256,16 @@ _MachampDexEntry::
 	page "that can send the"
 	next "victim clear over"
 	next "the horizon"
+	dex
+
+_MeganiumDexEntry::
+	text "blah blah blah"
+	next "blah blah blah"
+	next "blah blah blah"
+
+	page "blah blah blah"
+	next "blah blah blah"
+	next "blah blah blah"
 	dex
 
 _GolduckDexEntry::
@@ -1206,6 +1326,26 @@ _MagikarpDexEntry::
 	page "than the horribly"
 	next "weak descendants"
 	next "that exist today"
+	dex
+
+_SwinubDexEntry::
+	text "blah blah blah"
+	next "blah blah blah"
+	next "blah blah blah"
+
+	page "blah blah blah"
+	next "blah blah blah"
+	next "blah blah blah"
+	dex
+
+_PiloswineDexEntry::
+	text "blah blah blah"
+	next "blah blah blah"
+	next "blah blah blah"
+
+	page "blah blah blah"
+	next "blah blah blah"
+	next "blah blah blah"
 	dex
 
 _MukDexEntry::

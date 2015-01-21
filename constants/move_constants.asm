@@ -172,6 +172,10 @@ const_value = 1
 	const FLAIL        ; aa
 	const RAPID_SPIN   ; ab
 	const ENDURE       ; ac
+	const SNORE        ; ad
+	const SCARY_FACE   ; ae
+	const SPIDER_WEB   ; af
+	const POWDER_SNOW  ; b0
 
 NUM_ATTACKS EQU const_value + -1
 

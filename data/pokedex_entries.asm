@@ -67,7 +67,7 @@ PokedexEntryPointers: ; 4047e (10:447e)
 	dw DragoniteDexEntry
 	dw PhanpyDexEntry       ; Missingno
 	dw DonphanDexEntry      ; Missingno
-	dw MissingNoDexEntry
+	dw SentretDexEntry
 	dw DoduoDexEntry
 	dw PoliwagDexEntry
 	dw JynxDexEntry
@@ -77,23 +77,23 @@ PokedexEntryPointers: ; 4047e (10:447e)
 	dw DittoDexEntry
 	dw MeowthDexEntry
 	dw KrabbyDexEntry
-	dw MissingNoDexEntry
-	dw MissingNoDexEntry
-	dw MissingNoDexEntry
+	dw FurretDexEntry
+	dw TeddiursaDexEntry
+	dw UrsaringDexEntry
 	dw VulpixDexEntry
 	dw NinetalesDexEntry
 	dw PikachuDexEntry
 	dw RaichuDexEntry
-	dw MissingNoDexEntry
-	dw MissingNoDexEntry
+	dw SpinarakDexEntry
+	dw AriadosDexEntry
 	dw DratiniDexEntry
 	dw DragonairDexEntry
 	dw KabutoDexEntry
 	dw KabutopsDexEntry
 	dw HorseaDexEntry
 	dw SeadraDexEntry
-	dw MissingNoDexEntry
-	dw MissingNoDexEntry
+	dw TotodileDexEntry
+	dw CroconawDexEntry
 	dw SandshrewDexEntry
 	dw SandslashDexEntry
 	dw OmanyteDexEntry
@@ -113,27 +113,27 @@ PokedexEntryPointers: ; 4047e (10:447e)
 	dw WeedleDexEntry
 	dw KakunaDexEntry
 	dw BeedrillDexEntry
-	dw MissingNoDexEntry
+	dw FeraligatrDexEntry
 	dw DodrioDexEntry
 	dw PrimeapeDexEntry
 	dw DugtrioDexEntry
 	dw VenomothDexEntry
 	dw DewgongDexEntry
-	dw MissingNoDexEntry
-	dw MissingNoDexEntry
+	dw ChikoritaDexEntry
+	dw BayleefDexEntry
 	dw CaterpieDexEntry
 	dw MetapodDexEntry
 	dw ButterfreeDexEntry
 	dw MachampDexEntry
-	dw MissingNoDexEntry
+	dw MeganiumDexEntry
 	dw GolduckDexEntry
 	dw HypnoDexEntry
 	dw GolbatDexEntry
 	dw MewtwoDexEntry
 	dw SnorlaxDexEntry
 	dw MagikarpDexEntry
-	dw MissingNoDexEntry
-	dw MissingNoDexEntry
+	dw SwinubDexEntry
+	dw PiloswineDexEntry
 	dw MukDexEntry
 	dw MissingNoDexEntry
 	dw KinglerDexEntry
@@ -671,6 +671,13 @@ DonphanDexEntry:
 	TX_FAR _DonphanDexEntry
 	db "@"
 
+SentretDexEntry:
+	db "SQUIRREL@"
+	db 1,2
+	dw 90
+	TX_FAR _SentretDexEntry
+	db "@"
+
 DoduoDexEntry: ; 409cd (10:49cd)
 	db "TWIN BIRD@"
 	db 4,7
@@ -734,6 +741,27 @@ KrabbyDexEntry: ; 40a5d (10:4a5d)
 	TX_FAR _KrabbyDexEntry
 	db "@"
 
+FurretDexEntry:
+	db "FERRET@"
+	db 2,8
+	dw 470
+	TX_FAR _FurretDexEntry
+	db "@"
+
+TeddiursaDexEntry:
+	db "CUB@"
+	db 1,4
+	dw 100
+	TX_FAR _TeddiursaDexEntry
+	db "@"
+
+UrsaringDexEntry:
+	db "BEAR@"
+	db 5,8
+	dw 1300
+	TX_FAR _UrsaringDexEntry
+	db "@"
+
 VulpixDexEntry: ; 40a71 (10:4a71)
 	db "FOX@"
 	db 2,0
@@ -760,6 +788,20 @@ RaichuDexEntry: ; 40a9a (10:4a9a)
 	db 2,7
 	dw 660
 	TX_FAR _RaichuDexEntry
+	db "@"
+
+SpinarakDexEntry:
+	db "SPIDER@"
+	db 1,4
+	dw 80
+	TX_FAR _SpinarakDexEntry
+	db "@"
+
+AriadosDexEntry:
+	db "TARANTULA@"
+	db 3,3
+	dw 340
+	TX_FAR _AriadosDexEntry
 	db "@"
 
 DratiniDexEntry: ; 40aa9 (10:4aa9)
@@ -802,6 +844,20 @@ SeadraDexEntry: ; 40aff (10:4aff)
 	db 3,11
 	dw 550
 	TX_FAR _SeadraDexEntry
+	db "@"
+
+TotodileDexEntry:
+	db "IGUANA@"
+	db 1,11
+	dw 190
+	TX_FAR _TotodileDexEntry
+	db "@"
+
+CroconawDexEntry:
+	db "CROCODILE@"
+	db 3,7
+	dw 440
+	TX_FAR _CroconawDexEntry
 	db "@"
 
 SandshrewDexEntry: ; 40b0f (10:4b0f)
@@ -937,6 +993,13 @@ BeedrillDexEntry: ; 40c3f (10:4c3f)
 	TX_FAR _BeedrillDexEntry
 	db "@"
 
+FeraligatrDexEntry:
+	db "ALLIGATOR@"
+	db 5,5
+	dw 1800
+	TX_FAR _FeraligatrDexEntry
+	db "@"
+
 DodrioDexEntry: ; 40c53 (10:4c53)
 	db "TRIPLEBIRD@"
 	db 5,11
@@ -972,6 +1035,20 @@ DewgongDexEntry: ; 40c9d (10:4c9d)
 	TX_FAR _DewgongDexEntry
 	db "@"
 
+ChikoritaDexEntry:
+	db "LEAF@"
+	db 1,9
+	dw 160
+	TX_FAR _ChikoritaDexEntry
+	db "@"
+
+BayleefDexEntry:
+	db "LEAF@"
+	db 3,1
+	dw 830
+	TX_FAR _BayleefDexEntry
+	db "@"
+
 CaterpieDexEntry: ; 40caf (10:4caf)
 	db "WORM@"
 	db 1,0
@@ -998,6 +1075,13 @@ MachampDexEntry: ; 40ce0 (10:4ce0)
 	db 5,3
 	dw 2870
 	TX_FAR _MachampDexEntry
+	db "@"
+
+MeganiumDexEntry:
+	db "LEAF@"
+	db 5,4
+	dw 1600
+	TX_FAR _MeganiumDexEntry
 	db "@"
 
 GolduckDexEntry: ; 40cf4 (10:4cf4)
@@ -1040,6 +1124,20 @@ MagikarpDexEntry: ; 40d44 (10:4d44)
 	db 2,11
 	dw 220
 	TX_FAR _MagikarpDexEntry
+	db "@"
+
+SwinubDexEntry:
+	db "MOLE@"
+	db 1,0
+	dw 60
+	TX_FAR _SwinubDexEntry
+	db "@"
+
+PiloswineDexEntry:
+	db "MOLE@"
+	db 3,9
+	dw 460
+	TX_FAR _PiloswineDexEntry
 	db "@"
 
 MukDexEntry: ; 40d52 (10:4d52)

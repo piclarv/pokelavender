@@ -68,6 +68,7 @@ EffectsArray4: ; 3c030 (f:4030)
 	db RECOIL_EFFECT
 	db TWINEEDLE_EFFECT
 	db RAGE_EFFECT
+	db ROLLOUT_EFFECT
 	db -1
 EffectsArray5: ; 3c03b (f:403b)
 	db DRAIN_HP_EFFECT
@@ -390,6 +391,10 @@ MainInBattleLoop: ; 3c233 (f:4233)
 	ld a, [hl]
 	and %00010010 ; check if the player is thrashing about or charging for an attack
 	jr nz, .selectEnemyMove ; if so, jump
+	ld hl, W_PLAYERBATTSTATUS3
+	ld a, [hl]
+	and %01110000 ; check if player is using rollout
+	jr nz, .selectEnemyMove
 ; the player is neither thrashing about nor charging for an attack
 	call DisplayBattleMenu ; show battle menu
 	ret c ; return if player ran from battle
@@ -2999,6 +3004,9 @@ SelectEnemyMove: ; 3d564 (f:5564)
 	ld a, [W_ENEMYBATTSTATUS1]
 	and $21      ; using fly/dig or thrash/petal dance
 	ret nz
+	ld a, [W_ENEMYBATTSTATUS3]
+	and %01110000 ; using rollout
+	ret nz
 	ld a, [W_PLAYERBATTSTATUS1]
 	bit 5, a    ; caught in player's multi-turn move (e.g. wrap)
 	jr z, .notCaughtInWrap
@@ -4187,6 +4195,10 @@ GetDamageVarsForPlayerAttack: ; 3ddcf (f:5dcf)
 	and a
 	ld d, a ; d = move power
 	ret z ; return if move power is zero
+	cp 2
+	jr nz, .noRollout
+	call HandleRollout
+.noRollout	
 	ld a, [hl] ; a = [W_PLAYERMOVETYPE]
 	cp FIRE ; types >= FIRE are all special
 	jr nc, .specialAttack
@@ -4296,6 +4308,10 @@ GetDamageVarsForEnemyAttack: ; 3de75 (f:5e75)
 	ld d, a ; d = move power
 	and a
 	ret z ; return if move power is zero
+	cp 2
+	jr nz, .noRollout
+	call HandleRollout
+.noRollout
 	ld a, [hl] ; a = [W_ENEMYMOVETYPE]
 	cp FIRE ; types >= FIRE are all special
 	jr nc, .specialAttack
@@ -4395,6 +4411,30 @@ GetDamageVarsForEnemyAttack: ; 3de75 (f:5e75)
 	and a
 	ret
 
+HandleRollout:
+; get Rollout's power based on rollout counter	
+	push hl
+	
+	ld hl, W_ENEMYBATTSTATUS3
+	ld d, 15
+	ld a, [H_WHOSETURN]
+	and a
+	jr nz, .ok
+	ld hl, W_PLAYERBATTSTATUS3
+.ok
+	ld a, [hl]
+	and %01110000
+	swap a
+	and a
+	ret z 
+.loop
+	sla d
+	dec a
+	jr nz, .loop 
+	
+	pop hl
+	ret
+	
 ; get stat c of enemy mon
 ; c: stat to get (HP=1,Attack=2,Defense=3,Speed=4,Special=5)
 GetEnemyMonStat: ; 3df1c (f:5f1c)
@@ -4452,9 +4492,12 @@ CalculateDamage: ; 3df65 (f:5f65)
 	ld a, [W_ENEMYMOVEEFFECT]
 .effect
 
-; EXPLODE_EFFECT halves defense.
+; EXPLODE_EFFECT and ROLLOUT_EFFECT halve defense.
+	cp a, ROLLOUT_EFFECT
+	jr z, .halve
 	cp a, EXPLODE_EFFECT
 	jr nz, .ok
+.halve	
 	srl c
 	jr nz, .ok
 	inc c ; ...with a minimum value of 1 (used as a divisor later on)
@@ -7123,7 +7166,7 @@ MoveEffectPointerTable: ; 3f150 (f:7150)
 	 dw StatModifierDownEffect    ; DEFENSE_DOWN_SIDE_EFFECT
 	 dw StatModifierDownEffect    ; SPEED_DOWN_SIDE_EFFECT
 	 dw StatModifierDownEffect    ; SPECIAL_DOWN_SIDE_EFFECT
-	 dw StatModifierDownEffect    ; unused effect
+	 dw StatModifierDownEffect    ; ACCURACY_DOWN_SIDE_EFFECT
 	 dw StatModifierDownEffect    ; unused effect
 	 dw StatModifierDownEffect    ; unused effect
 	 dw StatModifierDownEffect    ; unused effect
@@ -7138,7 +7181,31 @@ MoveEffectPointerTable: ; 3f150 (f:7150)
 	 dw LeechSeedEffect           ; LEECH_SEED_EFFECT
 	 dw SplashEffect              ; SPLASH_EFFECT
 	 dw DisableEffect             ; DISABLE_EFFECT
+	 dw RolloutEffect			  ; ROLLOUT_EFFECT
 
+RolloutEffect:
+; increment Rollout counter (max 5)
+
+	ld hl, W_PLAYERBATTSTATUS3
+	ld a, [H_WHOSETURN]
+	and a
+	jr z, .ok
+	ld hl, W_ENEMYBATTSTATUS3
+.ok
+	ld a, [hl]
+	swap a 
+	inc a 
+	swap a 
+	ld [hl], a 
+	and %01110000
+	cp %01010000
+	jr nz, notMax
+	ld a, [hl]
+	and %10001111 ; clear rollout status
+	ld [hl], a
+.notMax	
+	ret
+	
 SleepEffect: ; 3f1fc (f:71fc)
 	ld de, wEnemyMonStatus
 	ld bc, W_ENEMYBATTSTATUS2

@@ -157,9 +157,9 @@ MonsterPalettes: ; 725c8 (1c:65c8)
 	db PAL_MAGMAR		; Cyndaquil
 	db PAL_MAGMAR		; Quilava
 	db PAL_CHARMELEON	; Typhlosion
-	db PAL_WARTORTLE	; Marill
+	db PAL_BUTTERFREE	; Marill
 	db PAL_POLIWHIRL	; Azumarill
-	db PAL_STARYU		; Phanpy
+	db PAL_NIDORAN_F	; Phanpy
 	db PAL_GRAVELER		; Donphan
 TrainerPalettes: ; 726ba (1c:66ba)
 	db PAL_HERO

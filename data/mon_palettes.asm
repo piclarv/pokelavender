@@ -161,6 +161,20 @@ MonsterPalettes: ; 725c8 (1c:65c8)
 	db PAL_POLIWHIRL	; Azumarill
 	db PAL_NIDORAN_F	; Phanpy
 	db PAL_GRAVELER		; Donphan
+	db PAL_KABUTO		; Sentret
+	db PAL_KABUTO		; Furret
+	db PAL_EEVEE		; Teddiursa
+	db PAL_RATICATE		; Ursaring
+	db PAL_HAUNTER		; Spinarak
+	db PAL_HAUNTER		; Ariados
+	db PAL_BUTTERFREE	; Totodile
+	db PAL_BUTTERFREE	; Croconaw
+	db PAL_BUTTERFREE	; Feraligatr
+	db PAL_BELLSPROUT	; Chikorita
+	db PAL_BELLSPROUT	; Bayleef
+	db PAL_VENUSAUR		; Meganium
+	db PAL_DIGLETT		; Swinub
+	db PAL_DUGTRIO		; Piloswine
 TrainerPalettes: ; 726ba (1c:66ba)
 	db PAL_HERO
 	db PAL_YOUNGSTER

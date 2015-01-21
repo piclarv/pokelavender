@@ -171,6 +171,10 @@ AttackAnimationPointers: ; 7a07d (1e:607d)
 	dw FlailAnim
 	dw RapidSpinAnim
 	dw EndureAnim
+	dw SnoreAnim
+	dw ScaryFaceAnim
+	dw SpiderWebAnim
+	dw PowderSnowAnim
 	dw StruggleAnim
 	dw ShowPicAnim
 	dw EnemyFlashAnim
@@ -1162,6 +1166,22 @@ RapidSpinAnim:
 	db $FF
 
 EndureAnim:
+	db $FF
+
+SnoreAnim:
+	db SE_BOUNCE_UP_AND_DOWN, $95
+	db $FF
+
+ScaryFaceAnim:
+	db SE_BOUNCE_UP_AND_DOWN, $95
+	db $FF
+
+SpiderWebAnim:
+	db SE_BOUNCE_UP_AND_DOWN, $95
+	db $FF
+
+PowderSnowAnim:
+	db SE_BOUNCE_UP_AND_DOWN, $95
 	db $FF
 
 BallTossAnim: ; 7a6d9 (1e:66d9)
