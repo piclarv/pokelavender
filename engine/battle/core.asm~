@@ -85,6 +85,7 @@ EffectsArray5: ; 3c03b (f:403b)
 	db ATTACK_TWICE_EFFECT
 	db JUMP_KICK_EFFECT
 	db RECOIL_EFFECT
+	db ROLLOUT_EFFECT
 	; fallthrough to Next EffectsArray
 EffectsArray5B: ; 3c049 (f:4049)
 ; moves that prevent the player from switching moves?
@@ -402,7 +403,7 @@ MainInBattleLoop: ; 3c233 (f:4233)
 	and a
 	ret nz ; return if pokedoll was used to escape from battle
 	ld a, [wBattleMonStatus]
-	and (1 << FRZ) | SLP ; is mon frozen or asleep?
+	and SLP ; is mon asleep?
 	jr nz, .selectEnemyMove ; if so, jump
 	ld a, [W_PLAYERBATTSTATUS1]
 	and %00100001 ; check player is using Bide or using a multi-turn attack like wrap
@@ -410,10 +411,10 @@ MainInBattleLoop: ; 3c233 (f:4233)
 	ld a, [W_ENEMYBATTSTATUS1]
 	bit 5, a ; check if enemy is using a multi-turn attack like wrap
 	jr z, .selectPlayerMove ; if not, jump
-; enemy is using a mult-turn attack like wrap, so player is trapped and cannot select a move
+; enemy is using a mult-turn attack like wrap, so player is trapped and can't execute a move unless Rapid Spin is selected
 	ld a, $ff
 	ld [wPlayerSelectedMove], a
-	jr .selectEnemyMove
+
 .selectPlayerMove
 	ld a, [wcd6a]
 	and a
@@ -2999,7 +3000,7 @@ SelectEnemyMove: ; 3d564 (f:5564)
 	and $12     ; using multi-turn move or bide
 	ret nz
 	ld a, [wEnemyMonStatus]
-	and SLP | 1 << FRZ ; sleeping or frozen
+	and SLP ; sleeping 
 	ret nz
 	ld a, [W_ENEMYBATTSTATUS1]
 	and $21      ; using fly/dig or thrash/petal dance
@@ -3010,9 +3011,13 @@ SelectEnemyMove: ; 3d564 (f:5564)
 	ld a, [W_PLAYERBATTSTATUS1]
 	bit 5, a    ; caught in player's multi-turn move (e.g. wrap)
 	jr z, .notCaughtInWrap
+	jr .caughtInWrap
 .unableToMove
 	ld a, $ff
 	jr .done
+.caughtInWrap
+	ld a, $ff
+	ld [wEnemySelectedMove], a
 .notCaughtInWrap
 	ld hl, wEnemyMonMoves+1 ; 2nd enemy move
 	ld a, [hld]
@@ -3389,6 +3394,9 @@ CheckPlayerStatusConditions: ; 3d854 (f:5854)
 .FrozenCheck
 	bit FRZ,[hl] ; frozen?
 	jr z,.HeldInPlaceCheck
+	ld a, [wPlayerSelectedMove]
+	cp FLAME_WHEEL
+	jr z, .defrostMon
 	ld hl,IsFrozenText
 	call PrintText
 	xor a
@@ -3396,14 +3404,34 @@ CheckPlayerStatusConditions: ; 3d854 (f:5854)
 	ld hl,Func_3d80a
 	jp .CannotUseMove
 
+.defrostMon	
+	ld hl, wBattleMonStatus
+	res FRZ, [hl]
+	xor a
+	inc a
+	ld [H_WHOSETURN],a
+	ld hl, FireDefrostedText
+	call PrintText
+	xor a
+	ld [H_WHOSETURN],a
+	
 .HeldInPlaceCheck
 	ld a,[W_ENEMYBATTSTATUS1]
 	bit 5,a
 	jp z,.FlinchedCheck
+	
+	ld a, [wPlayerSelectedMove]
+	cp RAPID_SPIN
+	jr z, .RapidSpin
+; rapid spin not used	
 	ld hl,CantMoveText
 	call PrintText
 	ld hl,Func_3d80a
 	jp .CannotUseMove
+	
+.RapidSpin
+	ld hl, W_ENEMYBATTSTATUS1
+	res 5, [hl] ; clear enemy using wrap
 
 .FlinchedCheck
 	ld hl,W_PLAYERBATTSTATUS1
@@ -4426,13 +4454,13 @@ HandleRollout:
 	and %01110000
 	swap a
 	and a
+	pop hl
 	ret z 
 .loop
 	sla d
 	dec a
 	jr nz, .loop 
 	
-	pop hl
 	ret
 	
 ; get stat c of enemy mon
@@ -5861,23 +5889,49 @@ CheckEnemyStatusConditions: ; 3e88f (f:688f)
 	ld [wccf2], a
 	ld hl, Func_3e88c
 	jp .cannotUseMove
+	
 .checkIfFrozen
 	bit FRZ, [hl]
 	jr z, .checkIfTrapped
+	ld a, [wEnemySelectedMove]
+	cp FLAME_WHEEL
+	jr z, .defrostMon
 	ld hl, IsFrozenText
 	call PrintText
 	xor a
 	ld [wccf2], a
 	ld hl, Func_3e88c
 	jp .cannotUseMove
+
+.defrostMon	
+	ld hl, wEnemyMonStatus
+	res FRZ, [hl]
+	xor a 
+	ld [H_WHOSETURN],a
+	ld hl, FireDefrostedText
+	call PrintText
+	xor a 
+	inc a 
+	ld [H_WHOSETURN],a
+	
 .checkIfTrapped
 	ld a, [W_PLAYERBATTSTATUS1]
 	bit 5, a ; is the player using a multi-turn attack like warp
 	jp z, .checkIfFlinched
+	
+	ld a, [wEnemySelectedMove]
+	cp RAPID_SPIN
+	jr z, .RapidSpin	
+; rapid spin not used	
 	ld hl, CantMoveText
 	call PrintText
 	ld hl, Func_3e88c
 	jp .cannotUseMove
+	
+.RapidSpin
+	ld hl, W_PLAYERBATTSTATUS1
+	res 5, [hl] ; clear player using wrap	
+	
 .checkIfFlinched
 	ld hl, W_ENEMYBATTSTATUS1
 	bit 3, [hl] ; check if enemy mon flinched
@@ -6853,7 +6907,7 @@ InitWildBattle: ; 3ef8b (f:6f8b)
 	jr nz, .isNoGhost
 .isGhost
 	ld hl, W_MONHSPRITEDIM
-	ld a, $77
+	ld a, $66
 	ld [hli], a   ; write sprite dimensions
 	ld bc, GhostPic
 	ld a, c
@@ -7182,7 +7236,27 @@ MoveEffectPointerTable: ; 3f150 (f:7150)
 	 dw SplashEffect              ; SPLASH_EFFECT
 	 dw DisableEffect             ; DISABLE_EFFECT
 	 dw RolloutEffect			  ; ROLLOUT_EFFECT
+	 dw RapidSpinEffect			  ; RAPID_SPIN_EFFECT
 
+RapidSpinEffect:
+; clear leech seed status from user
+	ld hl, W_PLAYERBATTSTATUS2
+	ld a, [H_WHOSETURN]
+	and a 
+	jr z, .ok
+	ld hl, W_ENEMYBATTSTATUS2
+.ok	
+	bit 7, [hl]
+	ret z
+	res 7, [hl] 
+	ld hl, RapidSpinText
+	call PrintText
+	ret
+	
+RapidSpinText:
+	TX_FAR _RapidSpinText
+	db "@"	
+	 
 RolloutEffect:
 ; increment Rollout counter (max 5)
 
@@ -7199,7 +7273,7 @@ RolloutEffect:
 	ld [hl], a 
 	and %01110000
 	cp %01010000
-	jr nz, notMax
+	jr nz, .notMax
 	ld a, [hl]
 	and %10001111 ; clear rollout status
 	ld [hl], a

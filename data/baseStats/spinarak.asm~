@@ -1,22 +1,22 @@
-UrsaringBaseStats:
-db DEX_URSARING ; pokedex id
-db 90 ; base hp
-db 130 ; base attack
-db 75 ; base defense
-db 55 ; base speed
-db 75 ; base special
-db NORMAL ; species type 1
-db NORMAL ; species type 2
-db 90 ; catch rate
-db 148 ; base exp yield
-INCBIN "pic/bmon/ursaring.pic",0,1 ; 55, sprite dimensions
-dw UrsaringPicFront
-dw UrsaringPicBack
+SpinarakBaseStats:
+db DEX_SPINARAK ; pokedex id
+db 40 ; base hp
+db 60 ; base attack
+db 40 ; base defense
+db 30 ; base speed
+db 40 ; base special
+db BUG ; species type 1
+db POISON ; species type 2
+db 255 ; catch rate
+db 52 ; base exp yield
+INCBIN "pic/bmon/spinarak.pic",0,1 ; 55, sprite dimensions
+dw SpinarakPicFront
+dw SpinarakPicBack
 ; attacks known at lvl 0
-db SCRATCH
-db LEER
-db LICK
-db FURY_SWIPES
+db POISON_STING
+db STRING_SHOT
+db 0
+db 0
 db 0 ; growth rate
 ; learnset
 db %00000000

@@ -741,66 +741,36 @@ UncompressMonSprite:: ; 1627 (0:1627)
 	jr z,.RecallBank
 	cp MON_GHOST
 	jr z,.RecallBank
-	cp MAREEP
-	jr z,.MareepBank
-;	cp FLAAFFY
-;	jr z,.MareepBank
-;	cp AMPHAROS
-;	jr z,.MareepBank
-;	cp CYNDAQUIL
-;	jr z,.MareepBank
-;	cp QUILAVA
-;	jr z,.MareepBank
-;	cp TYPHLOSION
-;	jr z,.MareepBank
-;	cp MARILL
-;	jr z,.MareepBank
-;	cp AZUMARILL
-;	jr z,.MareepBank
-;	cp PHANPY
-;	jr z,.MareepBank
-;	cp DONPHAN
-;	jr z,.MareepBank
-;	cp SENTRET
-;	jr z,.MareepBank
-;	cp FURRET
-;	jr z,.MareepBank
-;	cp TEDDIURSA
-;	jr z,.MareepBank
-;	cp URSARING
-;	jr z,.MareepBank
-;	cp SPINARAK
-;	jr z,.MareepBank
-;	cp ARIADOS
-;	jr z,.MareepBank
-	cp TOTODILE
-	jr z,.TotodileBank
-;	cp CROCONAW
-;	jr z,.TotodileBank
-;	cp FERALIGATR
-;	jr z,.TotodileBank
-;	cp CHIKORITA
-;	jr z,.TotodileBank
-;	cp BAYLEEF
-;	jr z,.TotodileBank
-;	cp MEGANIUM
-;	jr z,.TotodileBank
-;	cp SWINUB
-;	jr z,.TotodileBank
-;	cp PILOSWINE
-;	jr z,.TotodileBank
+;	ld hl, MareepBank
+;	ld de, 1
+;	call IsInArray
+;	jr c,.MareepBank
+;	ld hl, TotodileBank
+;	call IsInArray
+;	jr c,.TotodileBank
 	jr z, .GotBank
 	ld a, b
 	ld a,[$D0D3]
 	jr .GotBank
 .RecallBank
 	ld a,BANK(FossilKabutopsPic)
-.MareepBank
-	ld a,BANK(MareepPicFront)
-.TotodileBank
-	ld a,BANK(TotodilePicFront)
+; .MareepBank
+;	ld a,BANK(MareepPicFront)
+; .TotodileBank
+;	ld a,BANK(TotodilePicFront)
 .GotBank
 	jp UncompressSpriteData
+
+; MareepBank::
+;	db MAREEP, FLAAFFY, AMPHAROS, CYNDAQUIL, QUILAVA, TYPHLOSION
+;	db MARILL, AZUMARILL, PHANPY, DONPHAN, SENTRET, FURRET
+;	db TEDDIURSA, URSARING, SPINARAK, ARIADOS
+;	db $FF
+;
+; TotodileBank::
+;	db TOTODILE, CROCONAW, FERALIGATR, CHIKORITA, BAYLEEF
+;	db MEGANIUM, SWINUB, PILOSWINE
+;	db $FF
 
 	ds $19
 

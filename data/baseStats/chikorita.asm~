@@ -1,22 +1,22 @@
-FeraligatrBaseStats:
-db DEX_FERALIGATR ; pokedex id
-db 85 ; base hp
-db 105 ; base attack
-db 100 ; base defense
-db 78 ; base speed
-db 81 ; base special
-db WATER ; species type 1
-db WATER ; species type 2
+ChikoritaBaseStats:
+db DEX_CHIKORITA ; pokedex id
+db 45 ; base hp
+db 49 ; base attack
+db 65 ; base defense
+db 45 ; base speed
+db 57 ; base special
+db GRASS ; species type 1
+db GRASS ; species type 2
 db 45 ; catch rate
-db 209 ; base exp yield
-INCBIN "pic/bmon/feraligatr.pic",0,1 ; 55, sprite dimensions
-dw FeraligatrPicFront
-dw FeraligatrPicBack
+db 64 ; base exp yield
+INCBIN "pic/bmon/chikorita.pic",0,1 ; 55, sprite dimensions
+dw ChikoritaPicFront
+dw ChikoritaPicBack
 ; attacks known at lvl 0
-db SCRATCH
-db LEER
-db RAGE
-db WATER_GUN
+db TACKLE
+db GROWL
+db 0
+db 0
 db 3 ; growth rate
 ; learnset
 db %00000000

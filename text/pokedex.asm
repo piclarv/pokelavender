@@ -679,13 +679,13 @@ _DonphanDexEntry::
 	dex
 
 _SentretDexEntry::
-	text "blah blah blah"
-	next "blah blah blah"
-	next "blah blah blah"
+	text "Very cautious, it"
+	next "raises itself up"
+	next "using its tail to"
 
-	page "blah blah blah"
-	next "blah blah blah"
-	next "blah blah blah"
+	page "get a better view"
+	next "of its surround-"
+	next "ings"
 	dex
 
 _DoduoDexEntry::
@@ -779,33 +779,33 @@ _KrabbyDexEntry::
 	dex
 
 _FurretDexEntry::
-	text "blah blah blah"
-	next "blah blah blah"
-	next "blah blah blah"
+	text "It makes a nest to"
+	next "suit its long and"
+	next "skinny body. The"
 
-	page "blah blah blah"
-	next "blah blah blah"
-	next "blah blah blah"
+	page "nest is impossible"
+	next "for other #MON"
+	next "to enter"
 	dex
 
 _TeddiursaDexEntry::
-	text "blah blah blah"
-	next "blah blah blah"
-	next "blah blah blah"
+	text "If it finds honey,"
+	next "its crescent mark"
+	next "glows. It always"
 
-	page "blah blah blah"
-	next "blah blah blah"
-	next "blah blah blah"
+	page "licks its paws,"
+	next "because they are"
+	next "soaked with honey"
 	dex
 
 _UrsaringDexEntry::
-	text "blah blah blah"
-	next "blah blah blah"
-	next "blah blah blah"
+	text "Although it is a"
+	next "good climber, it"
+	next "prefers to snap"
 
-	page "blah blah blah"
-	next "blah blah blah"
-	next "blah blah blah"
+	page "trees with its"
+	next "forelegs and eat"
+	next "fallen berries"
 	dex
 
 _VulpixDexEntry::
@@ -849,23 +849,23 @@ _RaichuDexEntry::
 	dex
 
 _SpinarakDexEntry::
-	text "blah blah blah"
-	next "blah blah blah"
-	next "blah blah blah"
+	text "It lies in the"
+	next "same pose for"
+	next "days in its web,"
 
-	page "blah blah blah"
-	next "blah blah blah"
-	next "blah blah blah"
+	page "waiting for its"
+	next "unsuspecting prey"
+	next "to wander close"
 	dex
 
 _AriadosDexEntry::
-	text "blah blah blah"
-	next "blah blah blah"
-	next "blah blah blah"
+	text "It spins string"
+	next "not only from its"
+	next "rear, but also"
 
-	page "blah blah blah"
-	next "blah blah blah"
-	next "blah blah blah"
+	page "from its mouth. It"
+	next "is hard to tell"
+	next "what end is what"
 	dex
 
 _DratiniDexEntry::
@@ -929,23 +929,23 @@ _SeadraDexEntry::
 	dex
 
 _TotodileDexEntry::
-	text "blah blah blah"
-	next "blah blah blah"
-	next "blah blah blah"
+	text "It is small, but"
+	next "rough and tough."
+	next "It won't hesitate"
 
-	page "blah blah blah"
-	next "blah blah blah"
-	next "blah blah blah"
+	page "to take a bite"
+	next "out of anything"
+	next "that moves"
 	dex
 
 _CroconawDexEntry::
-	text "blah blah blah"
-	next "blah blah blah"
-	next "blah blah blah"
+	text "If it loses a fang"
+	next "a new one grows"
+	next "back in its place."
 
-	page "blah blah blah"
-	next "blah blah blah"
-	next "blah blah blah"
+	page "There are always"
+	next "48 fangs lining"
+	next "its mouth"
 	dex
 
 _SandshrewDexEntry::
@@ -1139,13 +1139,13 @@ _BeedrillDexEntry::
 	dex
 
 _FeraligatrDexEntry::
-	text "blah blah blah"
-	next "blah blah blah"
-	next "blah blah blah"
+	text "When it bites with"
+	next "its massive and"
+	next "powerful jaws, it"
 
-	page "blah blah blah"
-	next "blah blah blah"
-	next "blah blah blah"
+	page "shakes its head"
+	next "and savagely tears"
+	next "its victims up"
 	dex
 
 _DodrioDexEntry::
@@ -1199,23 +1199,23 @@ _DewgongDexEntry::
 	dex
 
 _ChikoritaDexEntry::
-	text "blah blah blah"
-	next "blah blah blah"
-	next "blah blah blah"
+	text "A sweet aroma"
+	next "gently wafts from"
+	next "the leaf on its"
 
-	page "blah blah blah"
-	next "blah blah blah"
-	next "blah blah blah"
+	page "head. It is docile"
+	next "and loves to soak"
+	next "up the sun's rays"
 	dex
 
 _BayleefDexEntry::
-	text "blah blah blah"
-	next "blah blah blah"
-	next "blah blah blah"
+	text "The scent of"
+	next "spices comes from"
+	next "around its neck."
 
-	page "blah blah blah"
-	next "blah blah blah"
-	next "blah blah blah"
+	page "Somehow, sniffing"
+	next "it makes you want"
+	next "to fight"
 	dex
 
 _CaterpieDexEntry::
@@ -1259,13 +1259,13 @@ _MachampDexEntry::
 	dex
 
 _MeganiumDexEntry::
-	text "blah blah blah"
-	next "blah blah blah"
-	next "blah blah blah"
+	text "The aroma that"
+	next "rises from its"
+	next "petals contains a"
 
-	page "blah blah blah"
-	next "blah blah blah"
-	next "blah blah blah"
+	page "substance that"
+	next "calms aggressive"
+	next "feelings"
 	dex
 
 _GolduckDexEntry::
@@ -1329,23 +1329,23 @@ _MagikarpDexEntry::
 	dex
 
 _SwinubDexEntry::
-	text "blah blah blah"
-	next "blah blah blah"
-	next "blah blah blah"
+	text "It rubs its snout"
+	next "on the ground to"
+	next "find and dig up"
 
-	page "blah blah blah"
-	next "blah blah blah"
-	next "blah blah blah"
+	page "food. It sometimes"
+	next "discovers hot"
+	next "springs"
 	dex
 
 _PiloswineDexEntry::
-	text "blah blah blah"
-	next "blah blah blah"
-	next "blah blah blah"
+	text "Because the long"
+	next "hair all over its"
+	next "body obscures its"
 
-	page "blah blah blah"
-	next "blah blah blah"
-	next "blah blah blah"
+	page "sight, it just"
+	next "keeps charging"
+	next "repeatedly"
 	dex
 
 _MukDexEntry::

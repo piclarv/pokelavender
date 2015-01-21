@@ -170,8 +170,8 @@ MonsterPalettes: ; 725c8 (1c:65c8)
 	db PAL_BUTTERFREE	; Totodile
 	db PAL_BUTTERFREE	; Croconaw
 	db PAL_BUTTERFREE	; Feraligatr
-	db PAL_BELLSPROUT	; Chikorita
-	db PAL_BELLSPROUT	; Bayleef
+	db PAL_EXEGGUTOR	; Chikorita
+	db PAL_EXEGGUTOR	; Bayleef
 	db PAL_VENUSAUR		; Meganium
 	db PAL_DIGLETT		; Swinub
 	db PAL_DUGTRIO		; Piloswine

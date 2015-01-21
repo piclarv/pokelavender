@@ -1,5 +1,5 @@
-PhanpyBaseStats: ; 38fe6 (e:4fe6)
-db DEX_PHANPY ; pokedex id
+DonphanBaseStats: ; 38fe6 (e:4fe6)
+db DEX_DONPHAN ; pokedex id
 db 90 ; base hp
 db 120 ; base attack
 db 120 ; base defense
