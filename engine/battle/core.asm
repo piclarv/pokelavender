@@ -69,6 +69,7 @@ EffectsArray4: ; 3c030 (f:4030)
 	db TWINEEDLE_EFFECT
 	db RAGE_EFFECT
 	db ROLLOUT_EFFECT
+	db RAPID_SPIN_EFFECT
 	db -1
 EffectsArray5: ; 3c03b (f:403b)
 	db DRAIN_HP_EFFECT
@@ -86,6 +87,7 @@ EffectsArray5: ; 3c03b (f:403b)
 	db JUMP_KICK_EFFECT
 	db RECOIL_EFFECT
 	db ROLLOUT_EFFECT
+	db RAPID_SPIN_EFFECT
 	; fallthrough to Next EffectsArray
 EffectsArray5B: ; 3c049 (f:4049)
 ; moves that prevent the player from switching moves?
@@ -461,6 +463,18 @@ MainInBattleLoop: ; 3c233 (f:4233)
 .asm_3c2dd
 	callab SwitchEnemyMon
 .noLinkBattle
+	ld a, [wPlayerSelectedMove]
+	cp ENDURE
+	jr nz, .playerDidNotUseEndure
+	ld a, [wEnemySelectedMove]
+	cp ENDURE
+	jr z, .compareSpeed  ; if both used Endure
+	jp .playerMovesFirst ; if player used Endure and enemy didn't
+.playerDidNotUseEndure
+	ld a, [wEnemySelectedMove]
+	cp ENDURE
+	jr z, .enemyMovesFirst ; if enemy used Endure and player didn't
+	
 	ld a, [wPlayerSelectedMove]
 	cp QUICK_ATTACK
 	jr nz, .playerDidNotUseQuickAttack
@@ -3116,9 +3130,48 @@ LinkBattleExchangeData: ; 3d605 (f:5605)
 	jr nz, .asm_3d654
 	ret
 
+EndureCounter:
+	jr nz, ClearEndure
+	dec b 
+	ld a, [$df00]		
+	jr nz, .playerEndure
+	and $f0 ; cap reached?
+	cp $f0
+	jr z, .finished
+	ld a,[$df00]
+	swap a 
+	inc a 
+	swap a 
+	ld [$df00],a
+	ret
+.playerEndure	
+	and $0f ; cap reached?
+	cp $0f
+	jr z, .finished
+	ld a,[$df00]
+	inc a 
+	ld [$df00],a
+	ret
+ClearEndure:	
+	dec b 
+	ld a, [$df00] 
+	jr nz, .playerEndure2
+	and %00001111
+	ld [$df00],a
+	ret
+.playerEndure2
+	and %11110000
+	ld [$df00],a
+.finished
+	ret
+	
 ExecutePlayerMove: ; 3d65e (f:565e)
 	xor a
 	ld [H_WHOSETURN], a
+	ld a, [wPlayerSelectedMove]
+	ld b,0
+	cp ENDURE
+	call EndureCounter
 	ld a, [wPlayerSelectedMove]
 	inc a
 	jp z, Func_3d80a
@@ -3135,6 +3188,8 @@ ExecutePlayerMove: ; 3d65e (f:565e)
 	jp z, Func_3d80a
 	call CheckPlayerStatusConditions
 	jr nz, .asm_3d68a
+	ld b,0
+	call ClearEndure ; if a special condition like being asleep occurred
 	jp [hl]
 .asm_3d68a
 	call GetCurrentMove
@@ -4909,9 +4964,11 @@ ApplyDamageToEnemyPokemon: ; 3e142 (f:6142)
 	ld [wHPBarOldHP+1],a
 	sbc b
 	ld [wEnemyMonHP],a
-	jr nc,.animateHpBar
+	jr nc,.checkForDamageEqualHP
 ; if more damage was done than the current HP, zero the HP and set the damage
 ; equal to how much HP the pokemon had before the attack
+.preventOverkillCheckForEndure
+	call HandleEnemyEndure ; check for enemy's endure
 	ld a,[wHPBarOldHP+1]
 	ld [hli],a
 	ld a,[wHPBarOldHP]
@@ -4919,7 +4976,16 @@ ApplyDamageToEnemyPokemon: ; 3e142 (f:6142)
 	xor a
 	ld hl,wEnemyMonHP
 	ld [hli],a
+	add b ; 1 hp if endure
 	ld [hl],a
+	jr .animateHpBar
+.checkForDamageEqualHP
+	ld a,[wEnemyMonHP+1]
+	and a 
+	jr nz, .animateHpBar
+	ld a,[wEnemyMonHP]
+	and a
+	jr z, .preventOverkillCheckForEndure
 .animateHpBar
 	ld hl,wEnemyMonMaxHP
 	ld a,[hli]
@@ -4938,6 +5004,43 @@ ApplyDamageToEnemyPokemon: ; 3e142 (f:6142)
 ApplyAttackToEnemyPokemonDone: ; 3e19d (f:619d)
 	jp DrawHUDsAndHPBars
 
+HandleEnemyEndure:
+; b=1 for successful endure, b=0 otherwise
+	push af
+	push hl
+	ld b,0
+	ld a,[$df00]
+	and %11110000
+	jr z, .noEndure
+	swap a
+	call GetEndureAccuracy
+	jr z, .endure
+	jr nc, .noEndure
+.endure	
+	call PrintEndureText
+	ld b,1
+.noEndure	
+	pop hl
+	pop af
+	ret
+	
+GetEndureAccuracy: 
+; halve accuracy for each consecutive use
+; z or c for success
+	ld d, a
+	xor a
+	dec a 
+.loop	
+	dec d 
+	jr z, .done 
+	srl a 
+	jr .loop
+.done	
+	ld d, a 
+	call BattleRandom 
+	cp d 
+	ret
+	
 ApplyAttackToPlayerPokemon: ; 3e1a0 (f:61a0)
 	ld a,[W_ENEMYMOVEEFFECT]
 	cp a,OHKO_EFFECT
@@ -5029,9 +5132,11 @@ ApplyDamageToPlayerPokemon: ; 3e200 (f:6200)
 	sbc b
 	ld [wBattleMonHP],a
 	ld [wHPBarNewHP+1],a
-	jr nc,.animateHpBar
+	jr nc,.checkForDamageEqualHP
 ; if more damage was done than the current HP, zero the HP and set the damage
 ; equal to how much HP the pokemon had before the attack
+.preventOverkillCheckForEndure
+	call HandlePlayerEndure
 	ld a,[wHPBarOldHP+1]
 	ld [hli],a
 	ld a,[wHPBarOldHP]
@@ -5039,10 +5144,20 @@ ApplyDamageToPlayerPokemon: ; 3e200 (f:6200)
 	xor a
 	ld hl,wBattleMonHP
 	ld [hli],a
+	add b
 	ld [hl],a
+	xor a
 	ld hl,wHPBarNewHP
 	ld [hli],a
 	ld [hl],a
+	jr .animateHpBar
+.checkForDamageEqualHP
+	ld a,[wBattleMonHP+1]
+	and a 
+	jr nz, .animateHpBar
+	ld a,[wBattleMonHP]
+	and a 
+	jr z, .preventOverkillCheckForEndure
 .animateHpBar
 	ld hl,wBattleMonMaxHP
 	ld a,[hli]
@@ -5055,6 +5170,33 @@ ApplyDamageToPlayerPokemon: ; 3e200 (f:6200)
 	predef UpdateHPBar2 ; animate the HP bar shortening
 ApplyAttackToPlayerPokemonDone
 	jp DrawHUDsAndHPBars
+	
+HandlePlayerEndure:
+	push af
+	push hl
+	ld b,0
+	ld a,[$df00]
+	and %00001111
+	jr z, .noEndure
+	call GetEndureAccuracy
+	jr z, .endure
+	jr nc, .noEndure
+.endure	
+	call PrintEndureText
+	ld b,1
+.noEndure	
+	pop hl
+	pop af
+	ret
+	
+PrintEndureText:
+	ld hl, EndureText
+	call PrintText
+	ret 
+	
+EndureText:
+	TX_FAR _EndureText
+	db "@"	
 
 AttackSubstitute: ; 3e25e (f:625e)
 	ld hl,SubstituteTookDamageText
@@ -5648,6 +5790,10 @@ RandomizeDamage: ; 3e687 (f:6687)
 
 ExecuteEnemyMove: ; 3e6bc (f:66bc)
 	ld a, [wEnemySelectedMove]
+	ld b,1
+	cp ENDURE
+	call EndureCounter
+	ld a, [wEnemySelectedMove]
 	inc a
 	jp z, Func_3e88c
 	call PrintGhostText
@@ -5671,6 +5817,8 @@ ExecuteEnemyMove: ; 3e6bc (f:66bc)
 	ld [wd05b], a
 	call CheckEnemyStatusConditions
 	jr nz, .canUseMove
+	ld b,1
+	call ClearEndure ; if a special condition like being asleep occurred	
 	jp [hl]
 .canUseMove
 	ld hl, W_ENEMYBATTSTATUS1
