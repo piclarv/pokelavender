@@ -3137,7 +3137,7 @@ EndureCounter:
 	jr nz, .playerEndure
 	and $f0 ; cap reached?
 	cp $f0
-	jr z, .finished
+	jp z, Finished
 	ld a,[$df00]
 	swap a 
 	inc a 
@@ -3147,7 +3147,7 @@ EndureCounter:
 .playerEndure	
 	and $0f ; cap reached?
 	cp $0f
-	jr z, .finished
+	jp z, Finished
 	ld a,[$df00]
 	inc a 
 	ld [$df00],a
@@ -3162,7 +3162,7 @@ ClearEndure:
 .playerEndure2
 	and %11110000
 	ld [$df00],a
-.finished
+Finished:
 	ret
 	
 ExecutePlayerMove: ; 3d65e (f:565e)
