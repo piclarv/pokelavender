@@ -411,10 +411,10 @@ MainInBattleLoop: ; 3c233 (f:4233)
 	ld a, [W_ENEMYBATTSTATUS1]
 	bit 5, a ; check if enemy is using a multi-turn attack like wrap
 	jr z, .selectPlayerMove ; if not, jump
-; enemy is using a mult-turn attack like wrap, so player is trapped and cannot select a move
+; enemy is using a mult-turn attack like wrap, so player is trapped and can't execute a move unless Rapid Spin is selected
 	ld a, $ff
 	ld [wPlayerSelectedMove], a
-	jr .selectEnemyMove
+
 .selectPlayerMove
 	ld a, [wcd6a]
 	and a
@@ -3011,9 +3011,13 @@ SelectEnemyMove: ; 3d564 (f:5564)
 	ld a, [W_PLAYERBATTSTATUS1]
 	bit 5, a    ; caught in player's multi-turn move (e.g. wrap)
 	jr z, .notCaughtInWrap
+	jr .caughtInWrap
 .unableToMove
 	ld a, $ff
 	jr .done
+.caughtInWrap
+	ld a, $ff
+	ld [wEnemySelectedMove], a
 .notCaughtInWrap
 	ld hl, wEnemyMonMoves+1 ; 2nd enemy move
 	ld a, [hld]
@@ -3415,10 +3419,19 @@ CheckPlayerStatusConditions: ; 3d854 (f:5854)
 	ld a,[W_ENEMYBATTSTATUS1]
 	bit 5,a
 	jp z,.FlinchedCheck
+	
+	ld a, [wPlayerSelectedMove]
+	cp RAPID_SPIN
+	jr z, .RapidSpin
+; rapid spin not used	
 	ld hl,CantMoveText
 	call PrintText
 	ld hl,Func_3d80a
 	jp .CannotUseMove
+	
+.RapidSpin
+	ld hl, W_ENEMYBATTSTATUS1
+	res 5, [hl] ; clear enemy using wrap
 
 .FlinchedCheck
 	ld hl,W_PLAYERBATTSTATUS1
@@ -5905,10 +5918,20 @@ CheckEnemyStatusConditions: ; 3e88f (f:688f)
 	ld a, [W_PLAYERBATTSTATUS1]
 	bit 5, a ; is the player using a multi-turn attack like warp
 	jp z, .checkIfFlinched
+	
+	ld a, [wEnemySelectedMove]
+	cp RAPID_SPIN
+	jr z, .RapidSpin	
+; rapid spin not used	
 	ld hl, CantMoveText
 	call PrintText
 	ld hl, Func_3e88c
 	jp .cannotUseMove
+	
+.RapidSpin
+	ld hl, W_PLAYERBATTSTATUS1
+	res 5, [hl] ; clear player using wrap	
+	
 .checkIfFlinched
 	ld hl, W_ENEMYBATTSTATUS1
 	bit 3, [hl] ; check if enemy mon flinched
@@ -7213,7 +7236,27 @@ MoveEffectPointerTable: ; 3f150 (f:7150)
 	 dw SplashEffect              ; SPLASH_EFFECT
 	 dw DisableEffect             ; DISABLE_EFFECT
 	 dw RolloutEffect			  ; ROLLOUT_EFFECT
+	 dw RapidSpinEffect			  ; RAPID_SPIN_EFFECT
 
+RapidSpinEffect:
+; clear leech seed status from user
+	ld hl, W_PLAYERBATTSTATUS2
+	ld a, [H_WHOSETURN]
+	and a 
+	jr z, .ok
+	ld hl, W_ENEMYBATTSTATUS2
+.ok	
+	bit 7, [hl]
+	ret z
+	res 7, [hl] 
+	ld hl, RapidSpinText
+	call PrintText
+	ret
+	
+RapidSpinText:
+	TX_FAR _RapidSpinText
+	db "@"	
+	 
 RolloutEffect:
 ; increment Rollout counter (max 5)
 

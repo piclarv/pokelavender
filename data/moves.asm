@@ -180,7 +180,7 @@ endm
 	move ROLLOUT,      ROLLOUT_EFFECT,               2, ROCK,     100, 20
 	move RAIN_DANCE,   SPLASH_EFFECT,                0, WATER,    100,  5
 	move FLAIL,        RECOIL_EFFECT,               50, NORMAL,   100, 15
-	move RAPID_SPIN,   NO_ADDITIONAL_EFFECT,        20, NORMAL,   100, 40
+	move RAPID_SPIN,   RAPID_SPIN_EFFECT,           20, NORMAL,   100, 40
 	move ENDURE,       SPLASH_EFFECT,                0, NORMAL,   100, 10
 	move SNORE,        SPLASH_EFFECT,                0, NORMAL,   100, 10
 	move SCARY_FACE,   SPEED_DOWN2_EFFECT,           0, NORMAL,   100, 10

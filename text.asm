@@ -2236,6 +2236,12 @@ _IsEvolvingText:: ; 946fb (25:46fb)
 	db $0
 	line "is evolving!"
 	done
+	
+_RapidSpinText::
+	text $5a
+	line "was released from"
+	cont "LEECH SEED!"
+	prompt	
 
 _FellAsleepText:: ; 94715 (25:4715)
 	text $59
