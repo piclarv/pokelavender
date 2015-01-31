@@ -80,7 +80,7 @@ _Route24BattleText6:: ; 94186 (25:4186)
 	done
 
 _Route24EndBattleText6:: ; 941e8 (25:41e8)
-	text "Whoo!"
+	text "Woo!"
 	line "Good stuff!"
 	prompt
 

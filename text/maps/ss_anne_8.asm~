@@ -11,8 +11,8 @@ _SSAnne8BattleText1:: ; 814f1 (20:54f1)
 	done
 
 _SSAnne8EndBattleText1:: ; 8152e (20:552e)
-	text "My, my"
-	line "friends..."
+	text "My,"
+	line "my friends..."
 	prompt
 
 _SSAnne8AfterBattleText1:: ; 81541 (20:5541)
@@ -41,7 +41,7 @@ _SSAnne8BattleText3:: ; 815bd (20:55bd)
 	done
 
 _SSAnne8EndBattleText3:: ; 815d3 (20:55d3)
-	text "Wow! "
+	text "Wow!"
 	line "You're great!"
 	prompt
 

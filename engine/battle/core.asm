@@ -7055,7 +7055,7 @@ InitWildBattle: ; 3ef8b (f:6f8b)
 	jr nz, .isNoGhost
 .isGhost
 	ld hl, W_MONHSPRITEDIM
-	ld a, $77
+	ld a, $66
 	ld [hli], a   ; write sprite dimensions
 	ld bc, GhostPic
 	ld a, c
@@ -7064,15 +7064,13 @@ InitWildBattle: ; 3ef8b (f:6f8b)
 	ld hl, wEnemyMonNick  ; set name to "GHOST"
 	ld a, "G"
 	ld [hli], a
-	ld a, "L"
+	ld a, "H"
 	ld [hli], a
-	ld a, "I"
+	ld a, "O"
+	ld [hli], a
+	ld a, "S"
 	ld [hli], a
 	ld a, "T"
-	ld [hli], a
-	ld a, "C"
-	ld [hli], a
-	ld a, "H"
 	ld [hli], a
 	ld [hl], "@"
 	ld a, [wcf91]

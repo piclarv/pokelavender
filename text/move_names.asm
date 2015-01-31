@@ -171,5 +171,9 @@ MoveNames:: ; b0000 (2c:4000)
 	db "FLAIL@"
 	db "RAPID SPIN@"
 	db "ENDURE@"
+	db "SNORE@"
+	db "SCARY FACE@"
+	db "SPIDER WEB@"
+	db "POWDER SNOW@"
 	db "STRUGGLE@"
 

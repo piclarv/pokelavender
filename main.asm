@@ -12,6 +12,7 @@ PICS_4 EQU $C
 PICS_5 EQU $D
 PICS_6 EQU $2D
 PICS_7 EQU $2E
+PICS_8 EQU $30
 
 
 INCLUDE "home.asm"
@@ -5397,7 +5398,7 @@ INCLUDE "data/moves.asm"
 
 BaseStats: INCLUDE "data/base_stats.asm"
 
-INCLUDE "data/cries.asm"
+; INCLUDE "data/cries.asm"
 INCLUDE "engine/battle/e.asm"
 
 TradingAnimationGraphics:
@@ -5642,6 +5643,7 @@ BattleMonPartyAttr:
 	ld bc, wPartyMon2 - wPartyMon1
 	jp AddNTimes
 
+INCLUDE "data/cries.asm"
 
 SECTION "bank10",ROMX,BANK[$10]
 
@@ -7004,12 +7006,46 @@ PhanpyPicFront::      INCBIN "pic/bmon/phanpy.pic"
 PhanpyPicBack::       INCBIN "pic/monback/phanpyb.pic"
 DonphanPicFront::     INCBIN "pic/bmon/donphan.pic"
 DonphanPicBack::      INCBIN "pic/monback/donphanb.pic"
+SentretPicFront::     INCBIN "pic/bmon/sentret.pic"
+SentretPicBack::      INCBIN "pic/monback/sentretb.pic"
+FurretPicFront::      INCBIN "pic/bmon/furret.pic"
+FurretPicBack::       INCBIN "pic/monback/furretb.pic"
+TeddiursaPicFront::   INCBIN "pic/bmon/teddiursa.pic"
+TeddiursaPicBack::    INCBIN "pic/monback/teddiursab.pic"
+UrsaringPicFront::    INCBIN "pic/bmon/ursaring.pic"
+UrsaringPicBack::     INCBIN "pic/monback/ursaringb.pic"
+SpinarakPicFront::    INCBIN "pic/bmon/spinarak.pic"
+SpinarakPicBack::     INCBIN "pic/monback/spinarakb.pic"
+AriadosPicFront::     INCBIN "pic/bmon/ariados.pic"
+AriadosPicBack::      INCBIN "pic/monback/ariadosb.pic"
 
 
 SECTION "bank2F",ROMX,BANK[$2F]
 
 INCLUDE "data/super_palettes.asm"
 
+SECTION "bank30",ROMX,BANK[PICS_8]
+
+TotodilePicFront::    INCBIN "pic/bmon/totodile.pic"
+TotodilePicBack::     INCBIN "pic/monback/totodileb.pic"
+CroconawPicFront::    INCBIN "pic/bmon/croconaw.pic"
+CroconawPicBack::     INCBIN "pic/monback/croconawb.pic"
+FeraligatrPicFront::  INCBIN "pic/bmon/feraligatr.pic"
+FeraligatrPicBack::   INCBIN "pic/monback/feraligatrb.pic"
+ChikoritaPicFront::   INCBIN "pic/bmon/chikorita.pic"
+ChikoritaPicBack::    INCBIN "pic/monback/chikoritab.pic"
+BayleefPicFront::     INCBIN "pic/bmon/bayleef.pic"
+BayleefPicBack::      INCBIN "pic/monback/bayleefb.pic"
+MeganiumPicFront::    INCBIN "pic/bmon/meganium.pic"
+MeganiumPicBack::     INCBIN "pic/monback/meganiumb.pic"
+SwinubPicFront::      INCBIN "pic/bmon/swinub.pic"
+SwinubPicBack::       INCBIN "pic/monback/swinubb.pic"
+PiloswinePicFront::   INCBIN "pic/bmon/piloswine.pic"
+PiloswinePicBack::    INCBIN "pic/monback/piloswineb.pic"
+
+SECTION "bank31",ROMX,BANK[$31]
+
+INCLUDE "text/pokedex2.asm"
 
 IF DEF(_OPTION_BEACH_HOUSE)
 SECTION "bank3C",ROMX[$4314],BANK[$3C]

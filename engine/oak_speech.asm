@@ -48,16 +48,6 @@ OakSpeech: ; 6115 (1:6115)
 	ld a,1
 	ld [wcf96],a					
 	call AddItemToInventory  ; give one potion
-	ld a,RARE_CANDY					; Delete all of this
-	ld [wcf91],a					; code after
-	ld a,99						; debugging is
-	ld [wcf96],a					; complete.
-	call AddItemToInventory				;
-	ld a,MASTER_BALL				;
-	ld [wcf91],a					;
-	ld a,99						;
-	ld [wcf96],a					;
-	call AddItemToInventory				;
 	ld a,[W_ANIMATIONID]
 	ld [wDestinationMap],a
 	call SpecialWarpIn

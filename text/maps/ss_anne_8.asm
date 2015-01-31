@@ -26,7 +26,7 @@ _SSAnne8BattleText2:: ; 81561 (20:5561)
 	done
 
 _SSAnne8EndBattleText2:: ; 81582 (20:5582)
-	text "Humph!"
+	text "Hmph!"
 	line "You rude child!"
 	prompt
 

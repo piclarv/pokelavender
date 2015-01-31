@@ -59,8 +59,11 @@ ViridianForestTrainerHeader2: ; 6115a (18:515a)
 	db $ff
 
 ViridianForestText1: ; 61167 (18:5167)
-	TX_FAR _ViridianForestText1
-	db "@"
+	db $08 ; asm
+	ld a, $2
+	ld [wWhichTrade], a
+	predef Predef54 
+	jp TextScriptEnd
 
 ViridianForestText2: ; 6116c (18:516c)
 	db $08 ; asm
