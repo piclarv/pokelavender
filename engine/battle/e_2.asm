@@ -300,3 +300,118 @@ ReflectGainedArmorText: ; 3bbdc (e:7bdc)
 BankswitchEtoF: ; 3bbe1 (e:7be1)
 	ld b, BANK(BattleCore)
 	jp Bankswitch
+
+SwitchAndTeleportEffect_:	
+	ld a, [H_WHOSETURN]
+	and a
+	jr nz, .asm_3f791
+	ld a, [W_ISINBATTLE]
+	dec a
+	jr nz, .asm_3f77e
+	ld a, [W_CURENEMYLVL]
+	ld b, a
+	ld a, [wBattleMonLevel]
+	cp b
+	jr nc, .asm_3f76e
+	add b
+	ld c, a
+	inc c
+.asm_3f751
+	callab BattleRandom
+	cp c
+	jr nc, .asm_3f751
+	srl b
+	srl b
+	cp b
+	jr nc, .asm_3f76e
+	ld c, $32
+	call DelayFrames
+	ld a, [W_PLAYERMOVENUM]
+	cp TELEPORT
+	jp nz, PrintDidntAffectText
+	jp PrintButItFailedText_
+.asm_3f76e
+	callab ReadPlayerMonCurHPAndStatus
+	xor a
+	ld [wcc5b], a
+	inc a
+	ld [wEscapedFromBattle], a
+	ld a, [W_PLAYERMOVENUM]
+	jr .asm_3f7e4
+.asm_3f77e
+	ld c, $32
+	call DelayFrames
+	ld hl, IsUnaffectedText
+	ld a, [W_PLAYERMOVENUM]
+	cp TELEPORT
+	jp nz, PrintText
+	jp PrintButItFailedText_
+.asm_3f791
+	ld a, [W_ISINBATTLE]
+	dec a
+	jr nz, .asm_3f7d1
+	ld a, [wBattleMonLevel]
+	ld b, a
+	ld a, [W_CURENEMYLVL]
+	cp b
+	jr nc, .asm_3f7c1
+	add b
+	ld c, a
+	inc c
+.asm_3f7a4
+	callab BattleRandom
+	cp c
+	jr nc, .asm_3f7a4
+	srl b
+	srl b
+	cp b
+	jr nc, .asm_3f7c1
+	ld c, $32
+	call DelayFrames
+	ld a, [W_ENEMYMOVENUM]
+	cp TELEPORT
+	jp nz, PrintDidntAffectText
+	jp PrintButItFailedText_
+.asm_3f7c1
+	callab ReadPlayerMonCurHPAndStatus
+	xor a
+	ld [wcc5b], a
+	inc a
+	ld [wEscapedFromBattle], a
+	ld a, [W_ENEMYMOVENUM]
+	jr .asm_3f7e4
+.asm_3f7d1
+	ld c, $32
+	call DelayFrames
+	ld hl, IsUnaffectedText
+	ld a, [W_ENEMYMOVENUM]
+	cp TELEPORT
+	jp nz, PrintText
+	jp Func_3fb4e
+.asm_3f7e4
+	push af
+	callab Func_3fbb9
+	ld c, $14
+	call DelayFrames
+	pop af
+	ld hl, RanFromBattleText
+	cp TELEPORT
+	jr z, .asm_3f7ff
+	ld hl, RanAwayScaredText
+	cp ROAR
+	jr z, .asm_3f7ff
+	ld hl, WasBlownAwayText
+.asm_3f7ff
+	jp PrintText
+
+RanFromBattleText: ; 3f802 (f:7802)
+	TX_FAR _RanFromBattleText
+	db "@"
+
+RanAwayScaredText: ; 3f807 (f:7807)
+	TX_FAR _RanAwayScaredText
+	db "@"
+
+WasBlownAwayText: ; 3f80c (f:780c)
+	TX_FAR _WasBlownAwayText
+	db "@"	
