@@ -2242,6 +2242,11 @@ _RapidSpinText::
 	line "was released from"
 	cont "LEECH SEED!"
 	prompt	
+	
+_EndureText::
+	text $59, "'s"
+	line "ENDURE activates!"
+	prompt
 
 _FellAsleepText:: ; 94715 (25:4715)
 	text $59

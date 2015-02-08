@@ -69,6 +69,7 @@ EffectsArray4: ; 3c030 (f:4030)
 	db TWINEEDLE_EFFECT
 	db RAGE_EFFECT
 	db ROLLOUT_EFFECT
+	db RAPID_SPIN_EFFECT
 	db -1
 EffectsArray5: ; 3c03b (f:403b)
 	db DRAIN_HP_EFFECT
@@ -86,6 +87,7 @@ EffectsArray5: ; 3c03b (f:403b)
 	db JUMP_KICK_EFFECT
 	db RECOIL_EFFECT
 	db ROLLOUT_EFFECT
+	db RAPID_SPIN_EFFECT
 	; fallthrough to Next EffectsArray
 EffectsArray5B: ; 3c049 (f:4049)
 ; moves that prevent the player from switching moves?
@@ -461,6 +463,18 @@ MainInBattleLoop: ; 3c233 (f:4233)
 .asm_3c2dd
 	callab SwitchEnemyMon
 .noLinkBattle
+	ld a, [wPlayerSelectedMove]
+	cp ENDURE
+	jr nz, .playerDidNotUseEndure
+	ld a, [wEnemySelectedMove]
+	cp ENDURE
+	jr z, .compareSpeed  ; if both used Endure
+	jp .playerMovesFirst ; if player used Endure and enemy didn't
+.playerDidNotUseEndure
+	ld a, [wEnemySelectedMove]
+	cp ENDURE
+	jr z, .enemyMovesFirst ; if enemy used Endure and player didn't
+	
 	ld a, [wPlayerSelectedMove]
 	cp QUICK_ATTACK
 	jr nz, .playerDidNotUseQuickAttack
@@ -3116,9 +3130,48 @@ LinkBattleExchangeData: ; 3d605 (f:5605)
 	jr nz, .asm_3d654
 	ret
 
+EndureCounter:
+	jr nz, ClearEndure
+	dec b 
+	ld a, [$df00]		
+	jr nz, .playerEndure
+	and $f0 ; cap reached?
+	cp $f0
+	jp z, Finished
+	ld a,[$df00]
+	swap a 
+	inc a 
+	swap a 
+	ld [$df00],a
+	ret
+.playerEndure	
+	and $0f ; cap reached?
+	cp $0f
+	jp z, Finished
+	ld a,[$df00]
+	inc a 
+	ld [$df00],a
+	ret
+ClearEndure:	
+	dec b 
+	ld a, [$df00] 
+	jr nz, .playerEndure2
+	and %00001111
+	ld [$df00],a
+	ret
+.playerEndure2
+	and %11110000
+	ld [$df00],a
+Finished:
+	ret
+	
 ExecutePlayerMove: ; 3d65e (f:565e)
 	xor a
 	ld [H_WHOSETURN], a
+	ld a, [wPlayerSelectedMove]
+	ld b,0
+	cp ENDURE
+	call EndureCounter
 	ld a, [wPlayerSelectedMove]
 	inc a
 	jp z, Func_3d80a
@@ -3135,6 +3188,8 @@ ExecutePlayerMove: ; 3d65e (f:565e)
 	jp z, Func_3d80a
 	call CheckPlayerStatusConditions
 	jr nz, .asm_3d68a
+	ld b,0
+	call ClearEndure ; if a special condition like being asleep occurred
 	jp [hl]
 .asm_3d68a
 	call GetCurrentMove
@@ -4909,9 +4964,11 @@ ApplyDamageToEnemyPokemon: ; 3e142 (f:6142)
 	ld [wHPBarOldHP+1],a
 	sbc b
 	ld [wEnemyMonHP],a
-	jr nc,.animateHpBar
+	jr nc,.checkForDamageEqualHP
 ; if more damage was done than the current HP, zero the HP and set the damage
 ; equal to how much HP the pokemon had before the attack
+.preventOverkillCheckForEndure
+	call HandleEnemyEndure ; check for enemy's endure
 	ld a,[wHPBarOldHP+1]
 	ld [hli],a
 	ld a,[wHPBarOldHP]
@@ -4919,7 +4976,16 @@ ApplyDamageToEnemyPokemon: ; 3e142 (f:6142)
 	xor a
 	ld hl,wEnemyMonHP
 	ld [hli],a
+	add b ; 1 hp if endure
 	ld [hl],a
+	jr .animateHpBar
+.checkForDamageEqualHP
+	ld a,[wEnemyMonHP+1]
+	and a 
+	jr nz, .animateHpBar
+	ld a,[wEnemyMonHP]
+	and a
+	jr z, .preventOverkillCheckForEndure
 .animateHpBar
 	ld hl,wEnemyMonMaxHP
 	ld a,[hli]
@@ -4938,6 +5004,43 @@ ApplyDamageToEnemyPokemon: ; 3e142 (f:6142)
 ApplyAttackToEnemyPokemonDone: ; 3e19d (f:619d)
 	jp DrawHUDsAndHPBars
 
+HandleEnemyEndure:
+; b=1 for successful endure, b=0 otherwise
+	push af
+	push hl
+	ld b,0
+	ld a,[$df00]
+	and %11110000
+	jr z, .noEndure
+	swap a
+	call GetEndureAccuracy
+	jr z, .endure
+	jr nc, .noEndure
+.endure	
+	call PrintEndureText
+	ld b,1
+.noEndure	
+	pop hl
+	pop af
+	ret
+	
+GetEndureAccuracy: 
+; halve accuracy for each consecutive use
+; z or c for success
+	ld d, a
+	xor a
+	dec a 
+.loop	
+	dec d 
+	jr z, .done 
+	srl a 
+	jr .loop
+.done	
+	ld d, a 
+	call BattleRandom 
+	cp d 
+	ret
+	
 ApplyAttackToPlayerPokemon: ; 3e1a0 (f:61a0)
 	ld a,[W_ENEMYMOVEEFFECT]
 	cp a,OHKO_EFFECT
@@ -5029,9 +5132,11 @@ ApplyDamageToPlayerPokemon: ; 3e200 (f:6200)
 	sbc b
 	ld [wBattleMonHP],a
 	ld [wHPBarNewHP+1],a
-	jr nc,.animateHpBar
+	jr nc,.checkForDamageEqualHP
 ; if more damage was done than the current HP, zero the HP and set the damage
 ; equal to how much HP the pokemon had before the attack
+.preventOverkillCheckForEndure
+	call HandlePlayerEndure
 	ld a,[wHPBarOldHP+1]
 	ld [hli],a
 	ld a,[wHPBarOldHP]
@@ -5039,10 +5144,20 @@ ApplyDamageToPlayerPokemon: ; 3e200 (f:6200)
 	xor a
 	ld hl,wBattleMonHP
 	ld [hli],a
+	add b
 	ld [hl],a
+	xor a
 	ld hl,wHPBarNewHP
 	ld [hli],a
 	ld [hl],a
+	jr .animateHpBar
+.checkForDamageEqualHP
+	ld a,[wBattleMonHP+1]
+	and a 
+	jr nz, .animateHpBar
+	ld a,[wBattleMonHP]
+	and a 
+	jr z, .preventOverkillCheckForEndure
 .animateHpBar
 	ld hl,wBattleMonMaxHP
 	ld a,[hli]
@@ -5055,6 +5170,33 @@ ApplyDamageToPlayerPokemon: ; 3e200 (f:6200)
 	predef UpdateHPBar2 ; animate the HP bar shortening
 ApplyAttackToPlayerPokemonDone
 	jp DrawHUDsAndHPBars
+	
+HandlePlayerEndure:
+	push af
+	push hl
+	ld b,0
+	ld a,[$df00]
+	and %00001111
+	jr z, .noEndure
+	call GetEndureAccuracy
+	jr z, .endure
+	jr nc, .noEndure
+.endure	
+	call PrintEndureText
+	ld b,1
+.noEndure	
+	pop hl
+	pop af
+	ret
+	
+PrintEndureText:
+	ld hl, EndureText
+	call PrintText
+	ret 
+	
+EndureText:
+	TX_FAR _EndureText
+	db "@"	
 
 AttackSubstitute: ; 3e25e (f:625e)
 	ld hl,SubstituteTookDamageText
@@ -5648,6 +5790,10 @@ RandomizeDamage: ; 3e687 (f:6687)
 
 ExecuteEnemyMove: ; 3e6bc (f:66bc)
 	ld a, [wEnemySelectedMove]
+	ld b,1
+	cp ENDURE
+	call EndureCounter
+	ld a, [wEnemySelectedMove]
 	inc a
 	jp z, Func_3e88c
 	call PrintGhostText
@@ -5671,6 +5817,8 @@ ExecuteEnemyMove: ; 3e6bc (f:66bc)
 	ld [wd05b], a
 	call CheckEnemyStatusConditions
 	jr nz, .canUseMove
+	ld b,1
+	call ClearEndure ; if a special condition like being asleep occurred	
 	jp [hl]
 .canUseMove
 	ld hl, W_ENEMYBATTSTATUS1
@@ -8063,119 +8211,9 @@ ThrashPetalDanceEffect: ; 3f717 (f:7717)
 	jp Func_3fb96
 
 SwitchAndTeleportEffect: ; 3f739 (f:7739)
-	ld a, [H_WHOSETURN]
-	and a
-	jr nz, .asm_3f791
-	ld a, [W_ISINBATTLE]
-	dec a
-	jr nz, .asm_3f77e
-	ld a, [W_CURENEMYLVL]
-	ld b, a
-	ld a, [wBattleMonLevel]
-	cp b
-	jr nc, .asm_3f76e
-	add b
-	ld c, a
-	inc c
-.asm_3f751
-	call BattleRandom
-	cp c
-	jr nc, .asm_3f751
-	srl b
-	srl b
-	cp b
-	jr nc, .asm_3f76e
-	ld c, $32
-	call DelayFrames
-	ld a, [W_PLAYERMOVENUM]
-	cp TELEPORT
-	jp nz, PrintDidntAffectText
-	jp PrintButItFailedText_
-.asm_3f76e
-	call ReadPlayerMonCurHPAndStatus
-	xor a
-	ld [wcc5b], a
-	inc a
-	ld [wEscapedFromBattle], a
-	ld a, [W_PLAYERMOVENUM]
-	jr .asm_3f7e4
-.asm_3f77e
-	ld c, $32
-	call DelayFrames
-	ld hl, IsUnaffectedText
-	ld a, [W_PLAYERMOVENUM]
-	cp TELEPORT
-	jp nz, PrintText
-	jp PrintButItFailedText_
-.asm_3f791
-	ld a, [W_ISINBATTLE]
-	dec a
-	jr nz, .asm_3f7d1
-	ld a, [wBattleMonLevel]
-	ld b, a
-	ld a, [W_CURENEMYLVL]
-	cp b
-	jr nc, .asm_3f7c1
-	add b
-	ld c, a
-	inc c
-.asm_3f7a4
-	call BattleRandom
-	cp c
-	jr nc, .asm_3f7a4
-	srl b
-	srl b
-	cp b
-	jr nc, .asm_3f7c1
-	ld c, $32
-	call DelayFrames
-	ld a, [W_ENEMYMOVENUM]
-	cp TELEPORT
-	jp nz, PrintDidntAffectText
-	jp PrintButItFailedText_
-.asm_3f7c1
-	call ReadPlayerMonCurHPAndStatus
-	xor a
-	ld [wcc5b], a
-	inc a
-	ld [wEscapedFromBattle], a
-	ld a, [W_ENEMYMOVENUM]
-	jr .asm_3f7e4
-.asm_3f7d1
-	ld c, $32
-	call DelayFrames
-	ld hl, IsUnaffectedText
-	ld a, [W_ENEMYMOVENUM]
-	cp TELEPORT
-	jp nz, PrintText
-	jp Func_3fb4e
-.asm_3f7e4
-	push af
-	call Func_3fbb9
-	ld c, $14
-	call DelayFrames
-	pop af
-	ld hl, RanFromBattleText
-	cp TELEPORT
-	jr z, .asm_3f7ff
-	ld hl, RanAwayScaredText
-	cp ROAR
-	jr z, .asm_3f7ff
-	ld hl, WasBlownAwayText
-.asm_3f7ff
-	jp PrintText
-
-RanFromBattleText: ; 3f802 (f:7802)
-	TX_FAR _RanFromBattleText
-	db "@"
-
-RanAwayScaredText: ; 3f807 (f:7807)
-	TX_FAR _RanAwayScaredText
-	db "@"
-
-WasBlownAwayText: ; 3f80c (f:780c)
-	TX_FAR _WasBlownAwayText
-	db "@"
+	ld hl, SwitchAndTeleportEffect_
+	ld b, BANK(SwitchAndTeleportEffect_)
+	jp Bankswitch
 
 TwoToFiveAttacksEffect: ; 3f811 (f:7811)
 	ld hl, W_PLAYERBATTSTATUS1
@@ -8550,88 +8588,9 @@ SplashEffect: ; 3fa84 (f:7a84)
 	jp PrintNoEffectText
 
 DisableEffect: ; 3fa8a (f:7a8a)
-	call MoveHitTest
-	ld a, [W_MOVEMISSED]
-	and a
-	jr nz, .asm_3fb06
-	ld de, W_ENEMYDISABLEDMOVE
-	ld hl, wEnemyMonMoves
-	ld a, [H_WHOSETURN]
-	and a
-	jr z, .asm_3faa4
-	ld de, W_PLAYERDISABLEDMOVE
-	ld hl, wBattleMonMoves
-.asm_3faa4
-	ld a, [de]
-	and a
-	jr nz, .asm_3fb06
-.asm_3faa8
-	push hl
-	call BattleRandom
-	and $3
-	ld c, a
-	ld b, $0
-	add hl, bc
-	ld a, [hl]
-	pop hl
-	and a
-	jr z, .asm_3faa8
-	ld [wd11e], a
-	push hl
-	ld a, [H_WHOSETURN]
-	and a
-	ld hl, wBattleMonPP
-	jr nz, .asm_3facf
-	ld a, [W_ISLINKBATTLE]
-	cp $4
-	pop hl
-	jr nz, .asm_3fae1
-	push hl
-	ld hl, wEnemyMonPP
-.asm_3facf
-	push hl
-	ld a, [hli]
-	or [hl]
-	inc hl
-	or [hl]
-	inc hl
-	or [hl]
-	and $3f
-	pop hl
-	jr z, .asm_3fb05
-	add hl, bc
-	ld a, [hl]
-	pop hl
-	and a
-	jr z, .asm_3faa8
-.asm_3fae1
-	call BattleRandom
-	and $7
-	inc a
-	inc c
-	swap c
-	add c
-	ld [de], a
-	call Func_3fb89
-	ld hl, wccee
-	ld a, [H_WHOSETURN]
-	and a
-	jr nz, .asm_3faf8
-	inc hl
-.asm_3faf8
-	ld a, [wd11e]
-	ld [hl], a
-	call GetMoveName
-	ld hl, MoveWasDisabledText
-	jp PrintText
-.asm_3fb05
-	pop hl
-.asm_3fb06
-	jp PrintButItFailedText_
-
-MoveWasDisabledText: ; 3fb09 (f:7b09)
-	TX_FAR _MoveWasDisabledText
-	db "@"
+	ld hl, DisableEffect_
+	ld b, BANK(DisableEffect_)
+	jp Bankswitch
 
 PayDayEffect: ; 3fb0e (f:7b0e)
 	ld hl, PayDayEffect_
