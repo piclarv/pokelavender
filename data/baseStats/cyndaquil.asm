@@ -19,11 +19,11 @@ db 0
 db 0
 db 3 ; growth rate
 ; learnset
-db %00000000
-db %00000000
-db %00000000
-db %00000000
-db %00000000
-db %00000000
-db %00000000
+db %10100100
+db %10000011
+db %10001100
+db %10001001
+db %01100011
+db %00011000
+db %01100010
 db BANK(CyndaquilPicFront)

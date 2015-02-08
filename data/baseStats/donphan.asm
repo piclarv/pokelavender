@@ -19,11 +19,11 @@ db 0
 db 0
 db 5 ; growth rate
 ; learnset
-db %00000000
-db %00000000
-db %00000000
-db %00000000
-db %00000000
-db %00000000
-db %00000000
+db %11100100
+db %01000011
+db %00001000
+db %10000110
+db %11100011
+db %10001000
+db %00110010
 db BANK(DonphanPicFront)

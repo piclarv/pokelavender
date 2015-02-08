@@ -19,11 +19,11 @@ db SMOKESCREEN
 db 0
 db 3 ; growth rate
 ; learnset
-db %00000000
-db %00000000
-db %00000000
-db %00000000
-db %00000000
-db %00000000
-db %00000000
+db %10100101
+db %10000011
+db %10001111
+db %10001011
+db %11100011
+db %00011000
+db %01100010
 db BANK(QuilavaPicFront)

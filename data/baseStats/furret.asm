@@ -19,11 +19,11 @@ db QUICK_ATTACK
 db 0
 db 0 ; growth rate
 ; learnset
-db %00000000
-db %00000000
-db %00000000
-db %00000000
-db %00000000
-db %00000000
-db %00000000
+db %10110101
+db %11111111
+db %10001111
+db %10001001
+db %11100111
+db %10011000
+db %00100011
 db BANK(FurretPicFront)

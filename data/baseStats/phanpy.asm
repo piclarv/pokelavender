@@ -19,11 +19,11 @@ db 0
 db 0
 db 5 ; growth rate
 ; learnset
-db %00000000
-db %00000000
-db %00000000
-db %00000000
-db %00000000
-db %00000000
-db %00000000
+db %11100100
+db %00000011
+db %00001000
+db %10000010
+db %01000011
+db %00001000
+db %00100010
 db BANK(PhanpyPicFront)

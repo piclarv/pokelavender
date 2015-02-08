@@ -19,11 +19,11 @@ db RAGE
 db WATER_GUN
 db 3 ; growth rate
 ; learnset
-db %00000000
-db %00000000
-db %00000000
-db %00000000
-db %00000000
-db %00000000
-db %00000000
+db %10110101
+db %01111111
+db %00001111
+db %10001110
+db %11000011
+db %10011000
+db %00110110
 db BANK(FeraligatrPicFront)

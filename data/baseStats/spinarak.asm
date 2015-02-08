@@ -19,11 +19,11 @@ db 0
 db 0
 db 0 ; growth rate
 ; learnset
-db %00000000
-db %00000000
-db %00000000
-db %00000000
-db %00000000
-db %00000000
-db %00000000
+db %00100100
+db %00000011
+db %00001000
+db %10010000
+db %01000011
+db %00101000
+db %00000110
 db BANK(SpinarakPicFront)

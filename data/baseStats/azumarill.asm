@@ -19,11 +19,11 @@ db TAIL_WHIP
 db WATER_GUN
 db 0 ; growth rate
 ; learnset
-db %00000000
-db %00000000
-db %00000000
-db %00000000
-db %00000000
-db %00000000
-db %00000000
+db %10111111
+db %11111111
+db %10011111
+db %10000001
+db %11000011
+db %00011000
+db %00110010
 db BANK(AzumarillPicFront)

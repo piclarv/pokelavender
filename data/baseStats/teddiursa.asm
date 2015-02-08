@@ -19,11 +19,11 @@ db 0
 db 0
 db 0 ; growth rate
 ; learnset
-db %00000000
-db %00000000
-db %00000000
-db %00000000
-db %00000000
-db %00000000
-db %00000000
+db %00100101
+db %10011011
+db %10001100
+db %10010000
+db %01000111
+db %10011000
+db %00000010
 db BANK(TeddiursaPicFront)

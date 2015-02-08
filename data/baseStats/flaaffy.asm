@@ -19,11 +19,11 @@ db THUNDERSHOCK
 db 0
 db 3 ; growth rate
 ; learnset
-db %00000000
-db %00000000
-db %00000000
-db %00000000
-db %00000000
-db %00000000
-db %00000000
+db %10100100
+db %00000011
+db %10011111
+db %10000001
+db %11100011
+db %00011000
+db %01100010
 db BANK(FlaaffyPicFront)

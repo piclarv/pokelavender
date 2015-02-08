@@ -19,11 +19,11 @@ db THUNDERSHOCK
 db THUNDER_WAVE
 db 3 ; growth rate
 ; learnset
-db %00000000
-db %00000000
-db %00000000
-db %00000000
-db %00000000
-db %00000000
-db %00000000
-db 0 ; padding
+db %10110101
+db %01000011
+db %10111111
+db %10010001
+db %11100011
+db %00111000
+db %01100010
+db BANK(AmpharosPicFront)

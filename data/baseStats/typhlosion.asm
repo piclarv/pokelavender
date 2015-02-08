@@ -19,11 +19,11 @@ db SMOKESCREEN
 db EMBER
 db 3 ; growth rate
 ; learnset
-db %00000000
-db %00000000
-db %00000000
-db %00000000
-db %00000000
-db %00000000
-db %00000000
+db %10110101
+db %11000011
+db %10001111
+db %10001111
+db %11100011
+db %10011000
+db %01100010
 db BANK(TyphlosionPicFront)

@@ -19,11 +19,11 @@ db 0
 db 0
 db 0 ; growth rate
 ; learnset
-db %00000000
-db %00000000
-db %00000000
-db %00000000
-db %00000000
-db %00000000
-db %00000000
+db %10100100
+db %10011011
+db %10001100
+db %10000000
+db %01000111
+db %00011000
+db %00000011
 db BANK(SentretPicFront)

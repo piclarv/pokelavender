@@ -19,11 +19,11 @@ db LICK
 db FURY_SWIPES
 db 0 ; growth rate
 ; learnset
-db %00000000
-db %00000000
-db %00000000
-db %00000000
-db %00000000
-db %00000000
-db %00000000
+db %10110101
+db %11111111
+db %10001111
+db %10010111
+db %11100111
+db %10111000
+db %00100010
 db BANK(UrsaringPicFront)

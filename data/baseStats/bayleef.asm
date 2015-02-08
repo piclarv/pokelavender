@@ -19,11 +19,11 @@ db RAZOR_LEAF
 db 0
 db 3 ; growth rate
 ; learnset
-db %00000000
-db %00000000
-db %00000000
-db %00000000
-db %00000000
-db %00000000
-db %00000000
+db %10100110
+db %00000011
+db %00111000
+db %10000000
+db %11000011
+db %00001000
+db %00000110
 db BANK(BayleefPicFront)

@@ -19,11 +19,11 @@ db SCARY_FACE
 db CONSTRICT
 db 0 ; growth rate
 ; learnset
-db %00000000
-db %00000000
-db %00000000
-db %00000000
-db %00000000
-db %00000000
-db %00000000
+db %00101110
+db %01000011
+db %00111100
+db %10010000
+db %01000011
+db %00101000
+db %00000110
 db BANK(AriadosPicFront)

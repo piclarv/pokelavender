@@ -19,11 +19,11 @@ db ENDURE
 db 0
 db 0 ; growth rate
 ; learnset
-db %00000000
-db %00000000
-db %00000000
-db %00000000
-db %00000000
-db %00000000
-db %00000000
+db %11100110
+db %01111111
+db %00001110
+db %10001110
+db %11100011
+db %10001000
+db %00100010
 db BANK(PiloswinePicFront)
